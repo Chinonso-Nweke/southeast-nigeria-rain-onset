@@ -41,27 +41,43 @@
   tr.me td{background:var(--soft);font-weight:600}
   .note{background:var(--soft);border-left:4px solid var(--warn);border-radius:6px;padding:12px 16px}
   .note ul{margin:8px 0 0;padding-left:20px}
+  .share{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px;font-size:.9rem}
+  .share .btn{font:inherit;font-size:.9rem;padding:7px 12px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--ink);cursor:pointer;text-decoration:none;display:inline-block}
+  .share .btn:hover{border-color:var(--accent)}
+  .share [hidden]{display:none}
   footer{margin-top:36px;font-size:.88rem;color:var(--muted)}
   @media(max-width:520px){th,td{padding:6px 3px;font-size:.82rem}}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>When do the rains start in south-east Nigeria?</h1>
-  <p class="lede">Planting too early risks losing seedlings to a dry spell. Planting too late wastes part of the season.
-    This page uses <span id="yrs">44</span> years of daily rainfall to show when the rains have usually started and how often early rains were followed by a dry spell.</p>
+  <h1 data-i18n="title">When do the rains start in south-east Nigeria?</h1>
+  <p class="lede" id="lede"></p>
 
-  <div style="margin-top:18px"><label for="loc">Choose a place</label><select id="loc"></select></div>
+  <div class="row" style="margin-top:18px">
+    <div><label for="lang" data-i18n="lang_label">Language</label>
+      <select id="lang"><option value="en">English</option><option value="pcm">Pidgin (draft)</option><option value="ig">Igbo (draft)</option></select></div>
+    <div><label for="loc" data-i18n="place_label">Choose a place</label><select id="loc"></select></div>
+  </div>
 
   <div class="tiles" id="tiles"></div>
 
-  <h2>Check a planting date</h2>
+  <h2 data-i18n="h_check">Check a planting date</h2>
   <div class="card">
     <div class="row">
-      <div><label for="tol">Dry spell length I worry about</label><select id="tol"></select></div>
-      <div><label for="day">Planting date: <strong id="dayLabel"></strong></label><input type="range" id="day" min="0" value="31" step="1"></div>
+      <div><label for="tol" data-i18n="tol_label">Dry spell length I worry about</label><select id="tol"></select></div>
+      <div><label for="day"><span data-i18n="day_label">Planting date</span>: <strong id="dayLabel"></strong></label><input type="range" id="day" min="0" value="31" step="1"></div>
     </div>
     <div class="result big" id="result" aria-live="polite"></div>
+    <p class="cap" id="safety" data-i18n="safety"></p>
+    <div class="share" id="share">
+      <span data-i18n="share_label">Share this result:</span>
+      <button class="btn" id="shNative" type="button" hidden data-i18n="share_btn">Share</button>
+      <a class="btn" id="shWa" target="_blank" rel="noopener">WhatsApp</a>
+      <a class="btn" id="shSms">SMS</a>
+      <button class="btn" id="shCopy" type="button" data-i18n="copy_btn">Copy</button>
+      <span id="shMsg" aria-live="polite"></span>
+    </div>
     <div id="riskChart" style="margin-top:14px"></div>
     <p class="cap">Share of years (1981 to 2024) with a dry spell of the chosen length in the 30 days after each planting date. A dry day is a day under 1 mm of rain. This looks at rainfall only. It ignores soil, crop and seed type, so it is not advice for a particular farm.</p>
   </div>
@@ -97,7 +113,7 @@
   </div>
 
   <footer>
-    <p>Data: <span id="source"></span>, downloaded October 2026. Code: https://github.com/Kendrick-Chinonso/southeast-nigeria-rain-onset.</p>
+    <p>Data: <span id="source"></span>, downloaded October 2026. Code: https://github.com/Kendrick-Chinonso/southeast-nigeria-rain-onset</p>
     <p>Built by Kendrick Chinonso as a first agricultural technology data project. This page is one file with no images and no outside requests, so it loads quickly on a weak connection and can be saved for offline use.</p>
   </footer>
 </div>
@@ -110,10 +126,61 @@ const DATA = {"rule":"From 1 March: first day with at least 20 mm in 3 days and 
   var $ = function (id) { return document.getElementById(id); };
   var locKey, tol = 7, dayIdx = 31;
 
+  var I18N = {
+    en: {
+      title: "When do the rains start in south-east Nigeria?",
+      lede: "Planting too early risks losing seedlings to a dry spell. Planting too late wastes part of the season. This page uses {n} years of daily rainfall to show when the rains have usually started and how often early rains were followed by a dry spell.",
+      lang_label: "Language", place_label: "Choose a place", h_check: "Check a planting date",
+      tol_label: "Dry spell length I worry about", day_label: "Planting date",
+      tol_opt: "{t} days or more",
+      result: "If you plant in <strong>{place}</strong> on <strong>{date}</strong>, then in <strong>{n} of {N} years ({p})</strong> a dry spell of {t} days or more followed within 30 days: {one}.",
+      one_in: "about 1 year in {k}", almost_never: "almost never",
+      safety: "This uses past rainfall only. It is not advice for your farm. Ask your agricultural extension officer.",
+      share_label: "Share this result:", share_btn: "Share", copy_btn: "Copy", copied: "Copied", share_fail: "Could not copy. Select the text and copy it.",
+      tile1: "Median start of the rains in {place} (working rule), across {N} years",
+      tile2: "Years with a false start: an early wet spell followed by a dry spell of a week or more",
+      tile3: "Average start in the second half of the record compared with the first half, in this dataset",
+      day: "day", days: "days", later: "{n} {u} later", earlier: "{n} {u} earlier", nochange: "no change", about: "about "
+    },
+    pcm: {
+      title: "Wen rain dey start for south-east Nigeria?",
+      lede: "If you plant too early, dry spell fit kill di small plants. If you plant too late, you go lose part of di season. Dis page dey use {n} years of rain record show wen rain don dey usually start, and how many times early rain follow dry spell.",
+      lang_label: "Language", place_label: "Choose place", h_check: "Check wen to plant",
+      tol_label: "How many dry days dey worry you", day_label: "Wen you wan plant",
+      tol_opt: "{t} days or more",
+      result: "If you plant for <strong>{place}</strong> on <strong>{date}</strong>, for <strong>{n} out of {N} years ({p})</strong> dry spell of {t} days or more show inside di next 30 days: {one}.",
+      one_in: "like 1 year for every {k} years", almost_never: "e hardly dey happen",
+      safety: "Dis one na only past rain record. E no be advice for your own farm. Ask your agric extension officer.",
+      share_label: "Share dis result:", share_btn: "Share", copy_btn: "Copy", copied: "E don copy", share_fail: "E no copy. Select di text copy am.",
+      tile1: "Middle date wen rain dey start for {place} (our working rule), across {N} years",
+      tile2: "Years wey get false start: early rain come, then dry spell of one week or more follow",
+      tile3: "Average start for di second half of di record compare to di first half, for dis data",
+      day: "day", days: "days", later: "{n} {u} later", earlier: "{n} {u} earlier", nochange: "no change", about: "like "
+    },
+    ig: {
+      title: "Mgbe ole ka oge mmiri ozuzo na-amalite na ndịda-ọwụwa anyanwụ Naịjirịa?",
+      lede: "Ọ bụrụ na ịkụ ihe ọkụkụ n'oge mbụ, ụbọchị ndị na-enweghị mmiri nwere ike ime ka ha nwụọ. Ọ bụrụ na ịkụ ha n'oge ọ karịrị, ị ga-atụfu otu akụkụ nke oge ọkụkụ. Ibe a na-eji ndekọ mmiri ozuzo afọ {n} gosi mgbe mmiri ozuzo na-amalitekarị, na ugboro ole ụbọchị ndị na-enweghị mmiri sochiri mmiri ozuzo mbụ.",
+      lang_label: "Asụsụ", place_label: "Họrọ ebe", h_check: "Lelee ụbọchị ịkụ ihe",
+      tol_label: "Ụbọchị ole na-enweghị mmiri na-echegbu m", day_label: "Ụbọchị m ga-akụ ihe",
+      tol_opt: "ụbọchị {t} ma ọ bụ karịa",
+      result: "Ọ bụrụ na ị kụọ ihe na <strong>{place}</strong> na <strong>{date}</strong>, n'ime afọ {N}, <strong>afọ {n} ({p})</strong> nwere ụbọchị {t} ma ọ bụ karịa na-enweghị mmiri n'ime ụbọchị 30 sochirinụ: {one}.",
+      one_in: "ihe dịka afọ 1 n'ime afọ {k}", almost_never: "ọ fọrọ nke nta ka ọ ghara ime",
+      safety: "Nke a bụ naanị ndekọ mmiri ozuzo gara aga. Ọ bụghị ndụmọdụ maka ugbo gị. Jụọ onye ọrụ mgbasa ozi ugbo (extension officer).",
+      share_label: "Kekọrịta nsonaazụ a:", share_btn: "Kekọrịta", copy_btn: "Detuo", copied: "Edetuola", share_fail: "Edetughị. Họrọ ederede ahụ detuo ya."
+    }
+  };
+  var lang = "en";
+  function T(key, vars) {
+    var str = (I18N[lang] && I18N[lang][key]);
+    if (str === undefined) str = I18N.en[key];
+    if (str === undefined) return key;
+    return str.replace(/\{(\w+)\}/g, function (m, k) { return vars && vars[k] !== undefined ? vars[k] : m; });
+  }
+
   function shiftText(n) {
-    var a = Math.abs(n), u = a === 1 ? " day" : " days";
-    if (a === 0) return "no change";
-    return a + u + (n > 0 ? " later" : " earlier");
+    var a = Math.abs(n);
+    if (a === 0) return T("nochange");
+    return T(n > 0 ? "later" : "earlier", { n: a, u: a === 1 ? T("day") : T("days") });
   }
   function fmtDoy(d) { var dt = new Date(Date.UTC(2001, 0, 1) + (Math.round(d) - 1) * 864e5); return dt.getUTCDate() + " " + M[dt.getUTCMonth()]; }
   function fmtMD(md) { var p = md.split("-"); return parseInt(p[1], 10) + " " + M[parseInt(p[0], 10) - 1]; }
@@ -210,16 +277,26 @@ const DATA = {"rule":"From 1 March: first day with at least 20 mm in 3 days and 
     var p = riskPct(L, tol, dayIdx), cnt = L.risk_counts[String(tol)][dayIdx];
     var d = fmtMD(DATA.risk_dates[dayIdx]);
     $("dayLabel").textContent = d;
-    var one = p < 3 ? "almost never" : "about 1 year in " + Math.max(1, Math.round(100 / p));
-    $("result").innerHTML = "If you plant in <strong>" + L.label + "</strong> on <strong>" + d + "</strong>, then in <strong>" + cnt +
-      " of " + L.years_n + " years (" + Math.round(p) + "%)</strong> a dry spell of " + tol + " days or more followed within 30 days: " + one + ".";
+    var one = p < 3 ? T("almost_never") : T("one_in", { k: Math.max(1, Math.round(100 / p)) });
+    $("result").innerHTML = T("result", { place: L.label, date: d, n: cnt, N: L.years_n, p: Math.round(p) + "%", t: tol, one: one });
+    updateShare();
+  }
+
+  function shareText() {
+    return $("result").textContent + " " + location.href.split("#")[0];
+  }
+  function updateShare() {
+    var txt = shareText();
+    $("shWa").href = "https://wa.me/?text=" + encodeURIComponent(txt);
+    $("shSms").href = "sms:?&body=" + encodeURIComponent(txt);
   }
 
   function tiles(L) {
     var t = $("tiles"); t.innerHTML = "";
-    [[L.median_onset, "Median start of the rains in " + L.label + " (working rule), across " + L.years_total + " years"],
-     [L.false_start_pct + "%", "Years with a false start: an early wet spell followed by a dry spell of a week or more"],
-     [(L.shift_days === 0 ? "" : "about ") + shiftText(L.shift_days), "Average start in the second half of the record compared with the first half, in this dataset"]
+    var sh = shiftText(L.shift_days);
+    [[L.median_onset, T("tile1", { place: L.label, N: L.years_total })],
+     [L.false_start_pct + "%", T("tile2")],
+     [(L.shift_days === 0 ? "" : T("about")) + sh, T("tile3")]
     ].forEach(function (x) {
       var d = document.createElement("div"); d.className = "tile";
       d.innerHTML = '<div class="num"></div><div class="lab"></div>';
@@ -246,6 +323,16 @@ const DATA = {"rule":"From 1 March: first day with at least 20 mm in 3 days and 
       later + " of " + ks.length + " places. All places use the same rainfall product, so they are not independent confirmations.";
   }
 
+  function applyLang() {
+    document.documentElement.lang = lang === "pcm" ? "pcm" : (lang === "ig" ? "ig" : "en");
+    var nodes = document.querySelectorAll("[data-i18n]");
+    for (var i = 0; i < nodes.length; i++) nodes[i].textContent = T(nodes[i].getAttribute("data-i18n"));
+    $("lede").textContent = T("lede", { n: DATA.locations[locKey].years_n });
+    document.title = T("title");
+    var opts = $("tol").options;
+    for (var j = 0; j < opts.length; j++) opts[j].textContent = T("tol_opt", { t: opts[j].value });
+  }
+
   function all() {
     var L = DATA.locations[locKey];
     tiles(L); updateResult(L); drawRisk(L); drawOnset(L); drawMonths(L); table();
@@ -264,11 +351,25 @@ const DATA = {"rule":"From 1 March: first day with at least 20 mm in 3 days and 
   });
   ts.value = String(tol);
   var dr = $("day"); dr.max = DATA.risk_dates.length - 1; dr.value = dayIdx;
-  $("yrs").textContent = DATA.locations[locKey].years_n;
   $("rule").textContent = DATA.rule;
+  applyLang();
   $("source").textContent = DATA.source;
 
   sel.addEventListener("change", function () { locKey = sel.value; all(); });
+  $("lang").addEventListener("change", function () { lang = $("lang").value; applyLang(); all(); });
+  function flash(msg) { $("shMsg").textContent = msg; setTimeout(function () { $("shMsg").textContent = ""; }, 2500); }
+  if (navigator.share) {
+    $("shNative").hidden = false;
+    $("shNative").addEventListener("click", function () {
+      navigator.share({ text: $("result").textContent, url: location.href.split("#")[0] }).catch(function () {});
+    });
+  }
+  $("shCopy").addEventListener("click", function () {
+    var txt = shareText();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).then(function () { flash(T("copied")); }, function () { flash(T("share_fail")); });
+    } else { flash(T("share_fail")); }
+  });
   ts.addEventListener("change", function () { tol = parseInt(ts.value, 10); var L = DATA.locations[locKey]; updateResult(L); drawRisk(L); });
   dr.addEventListener("input", function () { dayIdx = parseInt(dr.value, 10); var L = DATA.locations[locKey]; updateResult(L); drawRisk(L); });
   var rt; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(all, 150); });
