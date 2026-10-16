@@ -1,0 +1,202 @@
+{
+ "enugu": {
+  "years": "1981 to 2024",
+  "daily_correlation": 0.37,
+  "five_day_correlation": 0.54,
+  "yearly_total_correlation": 0.06,
+  "onset_year_correlation": 0.18,
+  "onset_mean_abs_diff_days": 22.7,
+  "mean_annual_mm": {
+   "nasa": 1623,
+   "other": 1594
+  },
+  "nasa": {
+   "median_onset": "17 April",
+   "median_doy": 107,
+   "false_start_pct": 18,
+   "shift_days": 21,
+   "trend_days_per_year": 0.99,
+   "step_year": 2007,
+   "step_p": 0.01,
+   "annual_first_half_mm": 1801,
+   "annual_second_half_mm": 1446,
+   "annual_change_pct": -19.7,
+   "annual_step_year": 2003,
+   "annual_step_p": 0.008
+  },
+  "other": {
+   "median_onset": "15 April",
+   "median_doy": 105,
+   "false_start_pct": 27,
+   "shift_days": 3,
+   "trend_days_per_year": 0.18,
+   "step_year": 2006,
+   "step_p": 0.9181,
+   "annual_first_half_mm": 1646,
+   "annual_second_half_mm": 1541,
+   "annual_change_pct": -6.4,
+   "annual_step_year": 2001,
+   "annual_step_p": 0.0869
+  }
+ },
+ "nsukka": {
+  "years": "1981 to 2024",
+  "daily_correlation": 0.38,
+  "five_day_correlation": 0.55,
+  "yearly_total_correlation": 0.05,
+  "onset_year_correlation": 0.29,
+  "onset_mean_abs_diff_days": 20.2,
+  "mean_annual_mm": {
+   "nasa": 1464,
+   "other": 1619
+  },
+  "nasa": {
+   "median_onset": "24 April",
+   "median_doy": 114,
+   "false_start_pct": 18,
+   "shift_days": 24,
+   "trend_days_per_year": 0.89,
+   "step_year": 1999,
+   "step_p": 0.024,
+   "annual_first_half_mm": 1618,
+   "annual_second_half_mm": 1311,
+   "annual_change_pct": -19.0,
+   "annual_step_year": 2004,
+   "annual_step_p": 0.012
+  },
+  "other": {
+   "median_onset": "13 April",
+   "median_doy": 103,
+   "false_start_pct": 43,
+   "shift_days": 8,
+   "trend_days_per_year": 0.34,
+   "step_year": 1998,
+   "step_p": 0.3846,
+   "annual_first_half_mm": 1669,
+   "annual_second_half_mm": 1569,
+   "annual_change_pct": -6.0,
+   "annual_step_year": 2001,
+   "annual_step_p": 0.0769
+  }
+ },
+ "abakaliki": {
+  "years": "1981 to 2024",
+  "daily_correlation": 0.35,
+  "five_day_correlation": 0.52,
+  "yearly_total_correlation": 0.03,
+  "onset_year_correlation": 0.12,
+  "onset_mean_abs_diff_days": 24.1,
+  "mean_annual_mm": {
+   "nasa": 1555,
+   "other": 1487
+  },
+  "nasa": {
+   "median_onset": "09 April",
+   "median_doy": 99,
+   "false_start_pct": 16,
+   "shift_days": 30,
+   "trend_days_per_year": 1.37,
+   "step_year": 2000,
+   "step_p": 0.002,
+   "annual_first_half_mm": 1732,
+   "annual_second_half_mm": 1378,
+   "annual_change_pct": -20.4,
+   "annual_step_year": 2008,
+   "annual_step_p": 0.002
+  },
+  "other": {
+   "median_onset": "15 April",
+   "median_doy": 105,
+   "false_start_pct": 20,
+   "shift_days": 5,
+   "trend_days_per_year": 0.23,
+   "step_year": 2009,
+   "step_p": 0.3666,
+   "annual_first_half_mm": 1518,
+   "annual_second_half_mm": 1456,
+   "annual_change_pct": -4.0,
+   "annual_step_year": 2001,
+   "annual_step_p": 0.1988
+  }
+ },
+ "onitsha": {
+  "years": "1981 to 2024",
+  "daily_correlation": 0.32,
+  "five_day_correlation": 0.48,
+  "yearly_total_correlation": 0.0,
+  "onset_year_correlation": 0.2,
+  "onset_mean_abs_diff_days": 22.7,
+  "mean_annual_mm": {
+   "nasa": 1903,
+   "other": 1213
+  },
+  "nasa": {
+   "median_onset": "09 April",
+   "median_doy": 99,
+   "false_start_pct": 32,
+   "shift_days": 21,
+   "trend_days_per_year": 0.68,
+   "step_year": 1998,
+   "step_p": 0.002,
+   "annual_first_half_mm": 2100,
+   "annual_second_half_mm": 1707,
+   "annual_change_pct": -18.7,
+   "annual_step_year": 1998,
+   "annual_step_p": 0.028
+  },
+  "other": {
+   "median_onset": "15 April",
+   "median_doy": 105,
+   "false_start_pct": 18,
+   "shift_days": 13,
+   "trend_days_per_year": 0.5,
+   "step_year": 2001,
+   "step_p": 0.1489,
+   "annual_first_half_mm": 1229,
+   "annual_second_half_mm": 1196,
+   "annual_change_pct": -2.7,
+   "annual_step_year": 2020,
+   "annual_step_p": 0.3666
+  }
+ },
+ "owerri": {
+  "years": "1981 to 2024",
+  "daily_correlation": 0.35,
+  "five_day_correlation": 0.49,
+  "yearly_total_correlation": -0.09,
+  "onset_year_correlation": 0.32,
+  "onset_mean_abs_diff_days": 22.5,
+  "mean_annual_mm": {
+   "nasa": 2072,
+   "other": 2298
+  },
+  "nasa": {
+   "median_onset": "01 April",
+   "median_doy": 91,
+   "false_start_pct": 27,
+   "shift_days": 19,
+   "trend_days_per_year": 0.65,
+   "step_year": 1998,
+   "step_p": 0.01,
+   "annual_first_half_mm": 2275,
+   "annual_second_half_mm": 1869,
+   "annual_change_pct": -17.9,
+   "annual_step_year": 1998,
+   "annual_step_p": 0.0629
+  },
+  "other": {
+   "median_onset": "10 March",
+   "median_doy": 69,
+   "false_start_pct": 9,
+   "shift_days": 5,
+   "trend_days_per_year": 0.11,
+   "step_year": 1989,
+   "step_p": 0.7013,
+   "annual_first_half_mm": 2334,
+   "annual_second_half_mm": 2262,
+   "annual_change_pct": -3.1,
+   "annual_step_year": 1996,
+   "annual_step_p": 0.1518
+  }
+ }
+}
