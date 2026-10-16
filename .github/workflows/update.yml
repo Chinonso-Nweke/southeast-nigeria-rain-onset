@@ -21,11 +21,16 @@ jobs:
       - name: Install packages
         run: pip install pandas numpy requests
 
-      - name: Check the onset rule still works
-        run: python test_onset.py
+      - name: Check the onset rule and the new methods still work
+        run: |
+          python test_onset.py
+          python test_new.py
 
       - name: Download the latest rainfall data
         run: python download_all.py
+
+      - name: Check the data quality
+        run: python check_data.py
 
       - name: Rebuild the page
         run: python build_site.py
