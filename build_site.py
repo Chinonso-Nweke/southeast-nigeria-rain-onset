@@ -2,18 +2,24 @@ import json
 from datetime import date
 import pandas as pd
 import onset
+import numpy as np
+from changepoint import changepoint
+from check_data import check as check_data_file
 from download_all import LOCATIONS
 from analyse_all import analyse
 
 TOLERANCES = [3, 5, 7, 10, 14]      # dry spell lengths (days) the page lets people choose
 WINDOW_DAYS = 30                    # we look at the 30 days after the planting date
 PLANT_DATES = pd.date_range("2001-03-01", "2001-06-30")   # 1 March to 30 June
+RECENT_YEARS = 20                   # the "recent" comparison uses the last 20 years
+WAIT_COSTS = [0.01, 0.03, 0.06]     # cost of waiting one week, as a share of a failed planting
 
 
-def risk_table(rain):
+def risk_table(rain, years=None):
     """For each planting date and each tolerance: in how many years did a dry spell
     of that length or longer happen within the next 30 days?"""
-    years = sorted(set(rain.index.year))
+    if years is None:
+        years = sorted(set(rain.index.year))
     counts = {str(t): [0] * len(PLANT_DATES) for t in TOLERANCES}
     for y in years:
         for i, d in enumerate(PLANT_DATES):
@@ -32,6 +38,8 @@ if __name__ == "__main__":
         "source": "NASA POWER daily PRECTOTCORR",
         "window_days": WINDOW_DAYS,
         "tolerances": TOLERANCES,
+        "wait_costs": WAIT_COSTS,
+        "recent_n": RECENT_YEARS,
         "risk_dates": [d.strftime("%m-%d") for d in PLANT_DATES],
         "locations": {},
     }
@@ -47,10 +55,19 @@ if __name__ == "__main__":
         a["years_n"] = int(len(set(rain.index.year)))
         first_year, last_year = int(rain.index.year.min()), int(rain.index.year.max())
         a["risk_counts"] = risk_table(rain)
+        all_years = sorted(set(rain.index.year))
+        a["risk_counts_recent"] = risk_table(rain, all_years[-RECENT_YEARS:])
+        found = [y for y in a["years"] if y["doy"] is not None]
+        a["changepoint"] = changepoint([y["year"] for y in found], [y["doy"] for y in found])
+        qa = check_data_file(name)
+        a["qa"] = {k: qa[k] for k in ("days", "missing_days", "wettest_day_mm", "wettest_day",
+                                      "annual_mm_first_half", "annual_mm_second_half",
+                                      "annual_change_year", "annual_change_p")}
         data["locations"][name] = a
         print(f"{name}: done")
 
     data["first_year"], data["last_year"] = first_year, last_year
+    data["recent_first"] = last_year - RECENT_YEARS + 1
     with open("results_site.json", "w") as f:
         json.dump(data, f)
 
