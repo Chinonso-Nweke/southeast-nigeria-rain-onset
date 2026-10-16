@@ -1,1 +1,39 @@
+name: Update rainfall page every year
 
+on:
+  schedule:
+    - cron: "0 6 15 2 *"      # 15 February each year, 06:00 UTC
+  workflow_dispatch:           # also lets you run it by hand from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install packages
+        run: pip install pandas numpy requests
+
+      - name: Check the onset rule still works
+        run: python test_onset.py
+
+      - name: Download the latest rainfall data
+        run: python download_all.py
+
+      - name: Rebuild the page
+        run: python build_site.py
+
+      - name: Save the changes
+        run: |
+          git config user.name "rainfall-update-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet || git commit -m "Yearly data update"
+          git push
