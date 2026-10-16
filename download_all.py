@@ -1,4 +1,6 @@
+import sys
 import time
+from datetime import date
 import requests
 import pandas as pd
 
@@ -11,10 +13,13 @@ LOCATIONS = {
     "owerri":    (5.48, 7.03),
 }
 
+FIRST_YEAR = 1981
+LAST_YEAR = date.today().year - 1      # the last complete year
+
 URL = ("https://power.larc.nasa.gov/api/temporal/daily/point"
        "?parameters=PRECTOTCORR&community=AG"
        "&longitude={lon}&latitude={lat}"
-       "&start=19810101&end=20241231&format=JSON")
+       "&start=" + str(FIRST_YEAR) + "0101&end=" + str(LAST_YEAR) + "1231&format=JSON")
 
 
 def download(name, lat, lon):
@@ -38,6 +43,11 @@ def download(name, lat, lon):
 
 
 if __name__ == "__main__":
+    failed = []
     for name, (lat, lon) in LOCATIONS.items():
-        download(name, lat, lon)
+        if not download(name, lat, lon):
+            failed.append(name)
         time.sleep(3)
+    if failed:
+        print("Failed:", ", ".join(failed))
+        sys.exit(1)

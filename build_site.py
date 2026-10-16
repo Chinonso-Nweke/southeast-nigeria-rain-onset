@@ -1,4 +1,5 @@
 import json
+from datetime import date
 import pandas as pd
 import onset
 from download_all import LOCATIONS
@@ -28,7 +29,7 @@ def risk_table(rain):
 if __name__ == "__main__":
     data = {
         "rule": "From 1 March: first day with at least 20 mm in 3 days and no dry spell of 7+ days (under 1 mm) in the next 30 days",
-        "source": "NASA POWER daily PRECTOTCORR, 1981-2024",
+        "source": "NASA POWER daily PRECTOTCORR",
         "window_days": WINDOW_DAYS,
         "tolerances": TOLERANCES,
         "risk_dates": [d.strftime("%m-%d") for d in PLANT_DATES],
@@ -44,15 +45,19 @@ if __name__ == "__main__":
         a["label"] = name.capitalize()
         a["lat"], a["lon"] = lat, lon
         a["years_n"] = int(len(set(rain.index.year)))
+        first_year, last_year = int(rain.index.year.min()), int(rain.index.year.max())
         a["risk_counts"] = risk_table(rain)
         data["locations"][name] = a
         print(f"{name}: done")
 
+    data["first_year"], data["last_year"] = first_year, last_year
     with open("results_site.json", "w") as f:
         json.dump(data, f)
 
     with open("template.html", encoding="utf-8") as f:
         html = f.read()
+    html = html.replace("__FIRST__", str(first_year)).replace("__LAST__", str(last_year))
+    html = html.replace("__DOWNLOADED__", date.today().strftime("%B %Y"))
     html = html.replace("__DATA__", json.dumps(data, separators=(",", ":")))
     with open("index.html", "w", encoding="utf-8") as f:
         f.write(html)

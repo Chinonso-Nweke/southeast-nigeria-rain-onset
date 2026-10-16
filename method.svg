@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 520" width="640" height="520" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <title>How the analysis works</title>
+  <rect width="640" height="520" fill="#f7f5ef"/>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#5b6b5f"/>
+    </marker>
+  </defs>
+  <g fill="#ffffff" stroke="#2f6b3a" stroke-width="1.5">
+    <rect x="40" y="24"  width="560" height="68" rx="10"/>
+    <rect x="40" y="120" width="560" height="68" rx="10"/>
+    <rect x="40" y="216" width="560" height="68" rx="10"/>
+    <rect x="40" y="312" width="560" height="68" rx="10"/>
+    <rect x="40" y="408" width="560" height="68" rx="10"/>
+  </g>
+  <g stroke="#5b6b5f" stroke-width="2" marker-end="url(#ar)">
+    <line x1="320" y1="92"  x2="320" y2="118"/>
+    <line x1="320" y1="188" x2="320" y2="214"/>
+    <line x1="320" y1="284" x2="320" y2="310"/>
+    <line x1="320" y1="380" x2="320" y2="406"/>
+  </g>
+  <g fill="#1d2a20" font-size="17" font-weight="700">
+    <text x="60" y="52">1. Download</text>
+    <text x="60" y="148">2. Apply the rule to every year</text>
+    <text x="60" y="244">3. Check the result</text>
+    <text x="60" y="340">4. Count dry spells after planting dates</text>
+    <text x="60" y="436">5. Publish</text>
+  </g>
+  <g fill="#5b6b5f" font-size="14">
+    <text x="60" y="75">NASA POWER daily rainfall, five places, 1981 to last full year</text>
+    <text x="60" y="171">Start of the rains and false starts (adapted from Sivakumar, 1988)</text>
+    <text x="60" y="267">Five rule variants, first vs second half, trend inside each period</text>
+    <text x="60" y="363">Every date from 1 March to 30 June, five dry spell lengths</text>
+    <text x="60" y="459">One small page, no images, no outside requests</text>
+  </g>
+  <g fill="#2f6b3a" font-size="12" text-anchor="end">
+    <text x="580" y="52">download_all.py</text>
+    <text x="580" y="148">onset.py</text>
+    <text x="580" y="244">make_results.py, trend.py, analyse_all.py</text>
+    <text x="580" y="340">build_site.py</text>
+    <text x="580" y="436">index.html</text>
+  </g>
+</svg>
