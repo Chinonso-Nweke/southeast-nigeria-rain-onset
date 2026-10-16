@@ -1,0 +1,66 @@
+{
+ "enugu": {
+  "days": 16436,
+  "missing_days": 0,
+  "wettest_day_mm": 163.3,
+  "wettest_day": "1983-08-03",
+  "annual_mm_first_half": 1801,
+  "annual_mm_second_half": 1427,
+  "annual_change_year": 2003,
+  "annual_change_p": 0.006,
+  "problems": [],
+  "warnings": []
+ },
+ "nsukka": {
+  "days": 16436,
+  "missing_days": 0,
+  "wettest_day_mm": 125.7,
+  "wettest_day": "1983-08-03",
+  "annual_mm_first_half": 1618,
+  "annual_mm_second_half": 1293,
+  "annual_change_year": 2004,
+  "annual_change_p": 0.01,
+  "problems": [],
+  "warnings": [
+   "unusual yearly totals in [1983]"
+  ]
+ },
+ "abakaliki": {
+  "days": 16436,
+  "missing_days": 0,
+  "wettest_day_mm": 137.9,
+  "wettest_day": "1983-08-03",
+  "annual_mm_first_half": 1732,
+  "annual_mm_second_half": 1349,
+  "annual_change_year": 2008,
+  "annual_change_p": 0.002,
+  "problems": [],
+  "warnings": [
+   "unusual yearly totals in [2000]"
+  ]
+ },
+ "onitsha": {
+  "days": 16436,
+  "missing_days": 0,
+  "wettest_day_mm": 174.1,
+  "wettest_day": "2017-07-21",
+  "annual_mm_first_half": 2100,
+  "annual_mm_second_half": 1700,
+  "annual_change_year": 1998,
+  "annual_change_p": 0.018,
+  "problems": [],
+  "warnings": []
+ },
+ "owerri": {
+  "days": 16436,
+  "missing_days": 0,
+  "wettest_day_mm": 152.6,
+  "wettest_day": "1983-08-03",
+  "annual_mm_first_half": 2275,
+  "annual_mm_second_half": 1869,
+  "annual_change_year": 1998,
+  "annual_change_p": 0.0459,
+  "problems": [],
+  "warnings": []
+ }
+}
