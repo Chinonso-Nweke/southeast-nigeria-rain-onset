@@ -45,11 +45,38 @@
   .share .btn{font:inherit;font-size:.9rem;padding:7px 12px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--ink);cursor:pointer;text-decoration:none;display:inline-block}
   .share .btn:hover{border-color:var(--accent)}
   .share [hidden]{display:none}
-  nav.top{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
-  nav.top .in{max-width:920px;margin:0 auto;padding:0 16px;display:flex;gap:4px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav.top{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 82%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);box-shadow:0 4px 18px rgba(0,0,0,.06);animation:navIn .6s cubic-bezier(.2,.8,.2,1) both}
+  nav.top .in{max-width:920px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;gap:6px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
   nav.top .in::-webkit-scrollbar{display:none}
-  nav.top a{color:var(--muted);text-decoration:none;font-size:.92rem;padding:12px 10px;border-bottom:2px solid transparent}
-  nav.top a:hover,nav.top a.on{color:var(--accent);border-bottom-color:var(--accent)}
+  nav.top a{position:relative;color:var(--muted);text-decoration:none;font-size:.92rem;font-weight:600;padding:8px 14px;border-radius:999px;border:1px solid transparent;transition:transform .22s cubic-bezier(.2,.9,.3,1.3),background .22s,color .22s,box-shadow .22s,border-color .22s;animation:linkIn .5s ease backwards}
+  nav.top a:nth-child(1){animation-delay:.05s} nav.top a:nth-child(2){animation-delay:.10s} nav.top a:nth-child(3){animation-delay:.15s} nav.top a:nth-child(4){animation-delay:.20s}
+  nav.top a:nth-child(5){animation-delay:.25s} nav.top a:nth-child(6){animation-delay:.30s} nav.top a:nth-child(7){animation-delay:.35s} nav.top a:nth-child(8){animation-delay:.40s}
+  nav.top a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  nav.top a.on{color:#fff;background:var(--accent);box-shadow:0 4px 12px rgba(47,107,58,.35)}
+  nav.top .bar{position:absolute;left:0;bottom:-1px;height:3px;width:100%;background:var(--accent);transform-origin:left;transform:scaleX(0)}
+  @media (hover:hover){
+    nav.top a:hover{transform:scale(1.15);color:var(--accent);background:var(--soft);border-color:var(--accent);box-shadow:0 6px 16px rgba(0,0,0,.14)}
+    nav.top a.on:hover{color:#fff;background:var(--accent)}
+    .share .btn:hover,.btnrow .btn:hover{transform:scale(1.08);box-shadow:0 5px 14px rgba(0,0,0,.14)}
+  }
+  .share .btn,.btnrow .btn{transition:transform .2s cubic-bezier(.2,.9,.3,1.3),box-shadow .2s,border-color .2s}
+  @keyframes navIn{from{opacity:0;transform:translateY(-100%)}to{opacity:1;transform:none}}
+  @keyframes linkIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion: reduce){nav.top,nav.top a{animation:none}nav.top a,.share .btn,.btnrow .btn{transition:none}nav.top a:hover,.share .btn:hover,.btnrow .btn:hover{transform:none}}
+  nav.top .tog{display:none}
+  @media (max-width:640px){
+    nav.top .tog{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;box-sizing:border-box;font:inherit;font-weight:700;font-size:.95rem;color:var(--ink);background:none;border:0;padding:12px 16px;cursor:pointer}
+    nav.top .tog .cur{color:var(--accent);font-weight:600;margin-left:auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    nav.top .tog .chev{display:inline-block;transition:transform .25s}
+    nav.top.open .tog .chev{transform:rotate(180deg)}
+    nav.top .in{display:none;position:absolute;top:100%;left:0;right:0;max-width:none;overflow:visible;white-space:normal;background:var(--bg);border-bottom:1px solid var(--line);box-shadow:0 12px 24px rgba(0,0,0,.12);padding:10px 12px 14px;grid-template-columns:1fr 1fr;gap:8px}
+    nav.top.open .in{display:grid;animation:dropIn .25s ease both}
+    nav.top .in a{text-align:center;padding:11px 8px;background:var(--card);border-color:var(--line)}
+    nav.top .in a.on{background:var(--accent);border-color:var(--accent)}
+    @keyframes dropIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+  }
+  @media (max-width:520px){table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}}
+  .wrap a,footer a{overflow-wrap:anywhere}
   h2[id]{scroll-margin-top:56px}
   html{scroll-behavior:smooth}
   @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
@@ -69,17 +96,32 @@
   .kv .box.main .big2,.kv .box.main .lab{color:#fff}
   .legend b.dia{display:inline-block;width:10px;height:10px;background:var(--ink);transform:rotate(45deg);vertical-align:middle;margin-right:7px}
   #flags{margin:8px 0 0;padding-left:20px}
+  .sum h2{margin-top:0}
+  .sum p{margin:6px 0}
+  .btnrow{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+  .btnrow .btn{font:inherit;font-size:.9rem;padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--ink);cursor:pointer}
+  .btnrow .btn:hover{border-color:var(--accent)}
+  .cite{background:var(--soft);border-radius:8px;padding:10px 14px;font-size:.92rem;word-break:break-word}
+  .refs{padding-left:20px;font-size:.92rem} .refs li{margin:6px 0}
+  .legend i.w{border-top-color:var(--warn)}
   footer{margin-top:36px;font-size:.88rem;color:var(--muted)}
   @media(max-width:520px){th,td{padding:6px 3px;font-size:.82rem}}
 </style>
 </head>
 <body>
-<nav class="top" aria-label="Sections"><div class="in">
-  <a href="#check">Check a date</a><a href="#best">Best date</a><a href="#sources">Sources</a><a href="#history">History</a><a href="#places">Places</a><a href="#method">Method and checks</a>
-</div></nav>
+<nav class="top" id="topNav" aria-label="Sections"><button class="tog" id="navToggle" type="button" aria-expanded="false" aria-controls="navLinks"><span>Menu</span><span class="cur" id="navCur"></span><span class="chev" aria-hidden="true">&#9662;</span></button><div class="in" id="navLinks">
+  <a href="#check">Check a date</a><a href="#best">Best date</a><a href="#sources">Sources</a><a href="#learned">Learned</a><a href="#history">History</a><a href="#places">Places</a><a href="#method">Method and checks</a><a href="#cite">Cite and data</a>
+</div><div class="bar" id="navBar"></div></nav>
 <div class="wrap">
   <h1 data-i18n="title">When do the rains start in south-east Nigeria?</h1>
   <p class="lede" id="lede"></p>
+
+  <div class="card sum" id="summary" aria-label="Summary">
+    <h2>Summary</h2>
+    <p id="sumWhat"></p>
+    <p id="sumFind"></p>
+    <p id="sumConc"></p>
+  </div>
 
   <div class="row" style="margin-top:18px">
     <div><label for="lang" data-i18n="lang_label">Language</label>
@@ -130,9 +172,21 @@
     <p id="trustLead"></p>
     <table id="agree"><thead><tr><th>Place</th><th>Agreement</th><th>Later start, second half</th><th>Yearly rain change</th><th>Yearly totals correlation</th></tr></thead><tbody></tbody></table>
     <p class="cap" id="agreeCap"></p>
+    <div id="annualChart" style="margin-top:14px"></div>
+    <div class="legend" id="annualLegend"></div>
+    <p class="cap" id="annualCap"></p>
     <p id="flagsHead" style="margin-top:14px"></p>
     <ul id="flags"></ul>
     <p class="cap">Agreement is rated by a rule of thumb of my own, not an official standard: weak if yearly totals correlate below 0.5, or the later-start estimates differ by more than 10 days, or the change in yearly rain differs by more than 8 percentage points; strong only if all of these are much tighter. Neither source is a rain gauge measurement, so agreement does not prove either is right.</p>
+  </div>
+
+  <h2 id="learned">What I learned</h2>
+  <div class="card">
+    <p><em>Written in October 2026, about the results at that date. The numbers elsewhere on this page update each year, but this account does not.</em></p>
+    <p>I started with one rainfall source (NASA POWER) and a written rule for when the rains start. It showed a later start at all five places, with a fall in yearly rain, and a statistical test said the shift in start date was unlikely to be luck.</p>
+    <p>But a test of luck is not a test of whether the data is right. I compared it with a second source made independently (ERA5). It pointed the same way for the start date, but with much smaller shifts at four of the five places, and it showed only a small fall in yearly rain. Only at Onitsha did it agree on a large shift. The two sources also barely agreed on which years were wet or dry. Neither is a rain gauge measurement.</p>
+    <p>So I stopped treating the later start as a finding. I built an auditor that rates how well the sources agree each time the page updates. I changed the best-date tool so it shows the spread across sources instead of one confident date. And I am preparing a farmer survey to gather independent evidence.</p>
+    <p><strong>What I would do next, with supervision:</strong> validate the sources against rain gauge records, use farmers' reports to calibrate which source to trust, and test whether the planting advice holds up under the remaining uncertainty.</p>
   </div>
 
   <h2 id="history">Start of the rains, year by year</h2>
@@ -159,8 +213,8 @@
     <p><strong>Working rule for the start of the rains:</strong> <span id="rule"></span></p>
     <ul>
       <li>The rainfall figures are satellite and model estimates (NASA POWER on a grid of roughly 50 km, ERA5 of roughly 25 km), not rain gauge readings from a farm.</li>
-      <li>The rule is adapted from Sivakumar (1988), who studied drier parts of West Africa. We apply it to a wetter zone and start looking on 1 March, so the numbers are a working choice, not an official standard for south-east Nigeria.</li>
-      <li>A false start means an early wet spell was followed by a dry spell of 7 days or more. The percentage depends on the rule, so always read it together with the rule.</li>
+      <li>The rule is adapted from Sivakumar (1988): the first date with at least 20 mm in 3 days and no dry spell over 7 days in the next 30 days. I changed two things: I start on 1 March instead of 1 May, and I count a day under 1 mm as dry (the paper gives no value). It was made for drier zones, so it is a working choice here, not an official standard for south-east Nigeria.</li>
+      <li>A false start means an early wet spell was followed by a dry spell longer than 7 days. The percentage depends on the rule, so always read it together with the rule.</li>
       <li id="methodTrust"></li>
       <li>Past patterns do not guarantee future seasons. Nothing here is planting advice for a particular farm.</li>
     </ul>
@@ -172,8 +226,32 @@
     <p class="cap">These checks run automatically every time the page is rebuilt. The rebuild stops if more than 0.5% of days are missing or any value is negative. A step in yearly totals can reveal a change in the data source, so it is worth comparing with the step in the start date above.</p>
   </div>
 
+  <h2 id="cite">Cite, reuse and references</h2>
+  <div class="card">
+    <p><strong>Suggested citation</strong></p>
+    <p class="cite" id="citeText"></p>
+    <div class="btnrow">
+      <button class="btn" id="dlCsv" type="button">Download results (CSV)</button>
+      <button class="btn" id="dlJson" type="button">Download results (JSON)</button>
+      <button class="btn" id="copyCite" type="button">Copy citation</button>
+      <span id="citeMsg" aria-live="polite" class="cap"></span>
+    </div>
+    <p class="cap">The CSV has one row per place, source and year: the start date of the rains, whether a false start came earlier, and the yearly rain. The code, tests and instructions to rerun everything are on GitHub.</p>
+    <p><strong>Data credits</strong></p>
+    <p class="cap">The data was obtained from National Aeronautics and Space Administration (NASA) Langley Research Center's Prediction Of Worldwide Energy Resources (POWER) project funded through the NASA Earth Science Division. <span id="powerDate"></span></p>
+    <p class="cap"><a href="https://open-meteo.com/">Weather data by Open-Meteo.com</a>, licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. It serves ERA5 reanalysis data from the Copernicus Climate Change Service (C3S) at ECMWF. Contains modified Copernicus Climate Change Service information. I changed the data by cutting it to the years and places used here and calculating the statistics shown.</p>
+    <p><strong>References</strong></p>
+    <ol class="refs">
+      <li>Ati, O. F., Stigter, C. J., &amp; Oladipo, E. O. (2002). A comparison of methods to determine the onset of the growing season in northern Nigeria. <em>International Journal of Climatology, 22</em>(6), 731&ndash;742. <a href="https://doi.org/10.1002/joc.712">https://doi.org/10.1002/joc.712</a></li>
+      <li>Hersbach, H., Bell, B., Berrisford, P., et al. (2020). The ERA5 global reanalysis. <em>Quarterly Journal of the Royal Meteorological Society, 146</em>, 1999&ndash;2049. <a href="https://doi.org/10.1002/qj.3803">https://doi.org/10.1002/qj.3803</a></li>
+      <li>Pettitt, A. N. (1979). A non-parametric approach to the change-point problem. <em>Journal of the Royal Statistical Society, Series C (Applied Statistics), 28</em>, 126&ndash;135.</li>
+      <li>Sivakumar, M. V. K. (1988). Predicting rainy season potential from the onset of rains in southern Sahelian and Sudanian climatic zones of West Africa. <em>Agricultural and Forest Meteorology, 42</em>(4), 295&ndash;305.</li>
+      <li>Zippenfenig, P. (2023). <em>Open-Meteo.com Weather API</em> [Computer software]. Zenodo. <a href="https://doi.org/10.5281/ZENODO.7970649">https://doi.org/10.5281/ZENODO.7970649</a></li>
+    </ol>
+  </div>
+
   <footer>
-    <p>Data: <span id="source"></span>, downloaded __DOWNLOADED__. Code: <a href="https://github.com/kendrick-chinonso/southeast-nigeria-rain-onset">github.com/kendrick-chinonso/southeast-nigeria-rain-onset</a>.</p>
+    <p>Data: <span id="source"></span> (<a href="https://open-meteo.com/">Weather data by Open-Meteo.com</a>), downloaded __DOWNLOADED__. Code: <a href="https://github.com/kendrick-chinonso/southeast-nigeria-rain-onset">github.com/kendrick-chinonso/southeast-nigeria-rain-onset</a>.</p>
     <p>Built by Kendrick Chinonso as a first agricultural technology data project. This page is one file with no images and no outside requests, so it loads quickly on a weak connection and can be saved for offline use.</p>
   </footer>
 </div>
@@ -523,6 +601,93 @@ const DATA = __DATA__;
     }
     $("methodTrust").textContent = DATA.trust_summary || "Only one rainfall source is loaded, so the planting-date numbers cannot be cross-checked. Treat them as indicative, not exact.";
   }
+  function rangeText(vals, unit, signed) {
+    var r = vals.map(function (v) { return Math.round(v); }), lo = Math.min.apply(null, r), hi = Math.max.apply(null, r);
+    function f(v) { return (signed && v > 0 ? "+" : "") + v; }
+    return (lo === hi ? f(lo) : f(lo) + " to " + f(hi)) + unit;
+  }
+  function summaryBlock() {
+    var ks = Object.keys(DATA.locations), N = ks.length, sk0 = DATA.sources[0];
+    $("sumWhat").textContent = "This project asks when the rains start in south-east Nigeria, and how risky it is to plant on a given date. It uses " + DATA.first_year + " to " + DATA.last_year +
+      " daily rainfall for " + N + " places, a written rule for the start of the rains, and tests of whether the patterns are real.";
+    var sents = DATA.sources.map(function (sk) {
+      var sh = ks.map(function (k) { return DATA.locations[k].src[sk].shift_days; });
+      var dr = ks.map(function (k) { var q = DATA.locations[k].src[sk].qa; return (q.annual_mm_second_half - q.annual_mm_first_half) / q.annual_mm_first_half * 100; });
+      return DATA.source_labels[sk] + ": the start of the rains shifts by " + rangeText(sh, " days", true) + " between the first and second half of the record (plus means later), and yearly rain changes by " + rangeText(dr, "%", true) + ".";
+    });
+    $("sumFind").textContent = sents.join(" ") + (DATA.trust_summary ? " " + DATA.trust_summary : "");
+    var weak = ks.filter(function (k) { return DATA.locations[k].agree && DATA.locations[k].agree.level === "weak"; }).length;
+    $("sumConc").textContent = DATA.sources.length < 2
+      ? "Only one rainfall source is loaded, so the findings cannot yet be cross-checked. Next steps: a second source, rain gauge records and a farmer survey."
+      : (weak > 0
+          ? "Conclusion: the later start is unconfirmed, and the planting-date numbers are indicative. Next steps: rain gauge records, and a farmer survey for independent evidence."
+          : "Conclusion: both sources broadly agree, but neither is a rain gauge measurement. Next steps: rain gauge records, and a farmer survey for independent evidence.");
+  }
+
+  function drawAnnual(k) {
+    var box = $("annualChart"), b = DATA.locations[k], W = width(box), H = W < 480 ? 220 : 260, m = { l: 46, r: 12, t: 12, b: 26 };
+    var vals = [];
+    DATA.sources.forEach(function (sk) { b.src[sk].annual_series.forEach(function (p) { vals.push(p[1]); }); });
+    var lo = Math.floor(Math.min.apply(null, vals) / 200) * 200, hi = Math.ceil(Math.max.apply(null, vals) / 200) * 200;
+    var y0 = DATA.first_year, y1 = DATA.last_year;
+    var sx = function (v) { return m.l + (v - y0) / (y1 - y0) * (W - m.l - m.r); };
+    var sy = function (v) { return H - m.b - (v - lo) / (hi - lo) * (H - m.t - m.b); };
+    var s = newSvg(box, W, H, "Line chart of yearly rainfall in millimetres at " + b.label + " from each rainfall source");
+    for (var g = lo; g <= hi; g += 200) {
+      el("line", { x1: m.l, x2: W - m.r, y1: sy(g), y2: sy(g), class: "ax" }, s);
+      el("text", { x: m.l - 6, y: sy(g) + 4, "text-anchor": "end", class: "txt" }, s, g);
+    }
+    [1990, 2000, 2010, 2020].forEach(function (yr) { if (yr > y0 && yr < y1) el("text", { x: sx(yr), y: H - 8, "text-anchor": "middle", class: "txt" }, s, yr); });
+    DATA.sources.forEach(function (sk, i) {
+      var pts = b.src[sk].annual_series.map(function (p) { return sx(p[0]) + "," + sy(p[1]); }).join(" ");
+      var attrs = { points: pts, fill: "none", stroke: i === 0 ? C.accent : C.warn, "stroke-width": i === 0 ? 2.5 : 2 };
+      if (i > 0) attrs["stroke-dasharray"] = "6 4";
+      el("polyline", attrs, s);
+    });
+    var lg = $("annualLegend"); lg.innerHTML = "";
+    DATA.sources.forEach(function (sk, i) {
+      var sp = document.createElement("span"), ic = document.createElement("i");
+      ic.className = i === 0 ? "" : "d w"; sp.appendChild(ic); sp.appendChild(document.createTextNode(DATA.source_labels[sk])); lg.appendChild(sp);
+    });
+    var r = b.agree ? " The two lines have a correlation of " + b.agree.numbers.yearly_r.toFixed(2) + " (1 means they rise and fall together, 0 means no relationship)." : "";
+    $("annualCap").textContent = "Yearly rainfall in " + b.label + ", " + y0 + " to " + y1 + "." + r;
+  }
+
+  function csvText() {
+    var rows = ["place,source,year,start_date,start_day_of_year,false_start_before,yearly_rain_mm"];
+    Object.keys(DATA.locations).forEach(function (k) {
+      var b = DATA.locations[k];
+      DATA.sources.forEach(function (sk) {
+        var s = b.src[sk], tot = {};
+        s.annual_series.forEach(function (p) { tot[p[0]] = p[1]; });
+        s.years.forEach(function (y) {
+          rows.push([JSON.stringify(b.label), JSON.stringify(DATA.source_labels[sk]), y.year, y.onset || "", y.doy === null ? "" : y.doy, y.false_start ? 1 : 0, tot[y.year] === undefined ? "" : tot[y.year]].join(","));
+        });
+      });
+    });
+    return rows.join("\n");
+  }
+  function download(name, text, type) {
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([text], { type: type })); a.download = name;
+    document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  }
+  function citeBlock() {
+    var yr = DATA.built_year, url = "https://kendrick-chinonso.github.io/southeast-nigeria-rain-onset/";
+    var txt = "Chinonso, K. (" + yr + "). When do the rains start in south-east Nigeria? An open analysis with two rainfall sources [Web page and code]. " + url +
+      (DATA.doi ? " https://doi.org/" + DATA.doi : "");
+    $("citeText").textContent = txt;
+    $("powerDate").textContent = "NASA POWER daily data (AG community, precipitation corrected), accessed " + "__DOWNLOADED__" + ".";
+    $("dlCsv").addEventListener("click", function () { download("rain-onset-results.csv", csvText(), "text/csv"); });
+    $("dlJson").addEventListener("click", function () { download("rain-onset-results.json", JSON.stringify(DATA), "application/json"); });
+    $("copyCite").addEventListener("click", function () {
+      var done = function (m) { $("citeMsg").textContent = m; setTimeout(function () { $("citeMsg").textContent = ""; }, 2500); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(function () { done("Copied"); }, function () { done("Could not copy. Select the text and copy it."); });
+      else done("Could not copy. Select the text and copy it.");
+    });
+  }
+
   function agreeSection() {
     var tb = document.querySelector("#agree tbody"); tb.innerHTML = "";
     var multi = DATA.sources.length > 1;
@@ -566,7 +731,7 @@ const DATA = __DATA__;
 
   function all() {
     var L = cur(locKey);
-    tiles(L); updateResult(L); drawRisk(L); drawOnset(L); drawMonths(L); table(); qaTable(); trust(); agreeSection();
+    tiles(L); updateResult(L); drawRisk(L); drawOnset(L); drawMonths(L); table(); qaTable(); trust(); agreeSection(); summaryBlock(); drawAnnual(locKey);
   }
 
   // set up controls
@@ -621,10 +786,29 @@ const DATA = __DATA__;
       var h = document.getElementById(links[i].getAttribute("href").slice(1));
       if (h && h.getBoundingClientRect().top < 120) cur = links[i].getAttribute("href");
     }
-    for (var j = 0; j < links.length; j++) links[j].className = links[j].getAttribute("href") === cur ? "on" : "";
+    for (var j = 0; j < links.length; j++) {
+      var on = links[j].getAttribute("href") === cur;
+      links[j].className = on ? "on" : "";
+      if (on) $("navCur").textContent = links[j].textContent;
+    }
+    if (!cur) $("navCur").textContent = "";
   }
-  window.addEventListener("scroll", markNav, { passive: true }); markNav();
+  var navBar = document.getElementById("navBar");
+  function progress() {
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    navBar.style.transform = "scaleX(" + (h > 0 ? Math.min(1, window.scrollY / h) : 0) + ")";
+  }
+  window.addEventListener("scroll", function () { markNav(); progress(); }, { passive: true }); markNav(); progress();
+  var topNav = $("topNav"), tog = $("navToggle");
+  function closeNav() { topNav.classList.remove("open"); tog.setAttribute("aria-expanded", "false"); }
+  tog.addEventListener("click", function () { var o = topNav.classList.toggle("open"); tog.setAttribute("aria-expanded", o ? "true" : "false"); });
+  for (var q = 0; q < links.length; q++) links[q].addEventListener("click", closeNav);
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeNav(); });
+  document.addEventListener("click", function (e) { if (!topNav.contains(e.target)) closeNav(); });
+  var onLink = document.querySelector("nav.top a.on");
+  if (onLink && onLink.scrollIntoView) onLink.scrollIntoView({ block: "nearest", inline: "center" });
   var rt; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(all, 150); });
+  citeBlock();
   all();
 })();
 </script>

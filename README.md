@@ -1,6 +1,6 @@
 # When do the rains start in south-east Nigeria?
 
-An open analysis of 44 years of daily rainfall for five places in south-east Nigeria (Enugu, Nsukka, Abakaliki, Onitsha and Owerri). It estimates when the rains usually start, how often an early wet spell is followed by a dry spell (a "false start"), and how risky it has been to plant on a given date.
+An open analysis of 45 years of daily rainfall for five places in south-east Nigeria (Enugu, Nsukka, Abakaliki, Onitsha and Owerri). It estimates when the rains usually start, how often an early wet spell is followed by a dry spell (a "false start"), and how risky it has been to plant on a given date.
 
 **Live page:** https://kendrick-chinonso.github.io/southeast-nigeria-rain-onset/
 
@@ -17,11 +17,11 @@ A farmer who plants after the first rains can lose seedlings if a dry spell foll
 For each year, starting from 1 March, the rains have started on the first day when:
 
 - at least **20 mm** of rain has fallen over **3 days in a row**, and
-- there is **no dry spell of 7 days or more** (days under 1 mm) in the **next 30 days**.
+- there is **no dry spell longer than 7 days** (days under 1 mm) in the **next 30 days**.
 
-A **false start** means an earlier wet spell met the first condition but was followed by a dry spell of 7 days or more.
+A **false start** means an earlier wet spell met the first condition but was followed by a dry spell longer than 7 days.
 
-The rule is adapted from Sivakumar (1988), who studied drier parts of West Africa and, in the version I know, started looking in May. I apply it to a wetter zone and start on 1 March, so the numbers are a working choice, not an official standard for south-east Nigeria. I confirmed that the paper exists and that a slide deck from the African Centre of Meteorological Application for Development (ACMAD) attributes this rule to it. I have not read the paper's full text.
+The rule is adapted from Sivakumar (1988), who defined the onset of the rains as the date after 1 May when rainfall accumulated over 3 consecutive days is at least 20 mm and no dry spell within the next 30 days exceeds 7 days (I read the paper's text for this). Ati et al. (2002) compare this and other onset definitions for northern Nigeria. **What I changed (two things):** (1) I start looking on 1 March instead of 1 May, because the rains begin earlier in south-east Nigeria. (2) I count a day under 1 mm as dry, because the paper does not define a dry day. The 20 mm in 3 days, the 30-day window and the dry spell limit (longer than 7 days) are as in the paper. Sivakumar developed the rule for the Sahelian and Sudanian zones, so applying it to a wetter zone is my own choice and has not been validated for south-east Nigeria.
 
 ## What the page does
 
@@ -35,63 +35,38 @@ The rule is adapted from Sivakumar (1988), who studied drier parts of West Afric
 
 ## What it found so far
 
-These numbers come from the 1981 to 2024 run. The live page updates itself each year, so these may differ slightly from what you see there.
+These numbers come from the 1981 to 2025 run with the rule above. The live page updates itself each year, so they may differ slightly from what you see there.
 
-| Place | Median start | False starts | Later-half shift* |
-|---|---|---|---|
-| Owerri | 1 April | 27% | +19 days |
-| Onitsha | 9 April | 32% | +21 days |
-| Abakaliki | 9 April | 16% | +30 days |
-| Enugu | 17 April | 18% | +21 days |
-| Nsukka | 24 April | 18% | +24 days |
+**NASA POWER**
 
-*Average start date in the second half of the record minus the first half.
+| Place | Median start | False starts | Later-half shift* | Biggest jump in start date | Chance of a jump this big by luck | Yearly rain, first to second half |
+|---|---|---|---|---|---|---|
+| Owerri | 1 April | 24% | +18 days | 1997/1998 | 1.0% | 2275 to 1869 mm (-18%) |
+| Onitsha | 7 April | 31% | +18 days | 1997/1998 | 0.7% | 2100 to 1700 mm (-19%) |
+| Abakaliki | 11 April | 16% | +31 days | 2013/2014 | 0.2% | 1732 to 1349 mm (-22%) |
+| Enugu | 13 April | 11% | +23 days | 1998/1999 | 0.8% | 1801 to 1427 mm (-21%) |
+| Nsukka | 24 April | 16% | +29 days | 1998/1999 | 0.3% | 1618 to 1293 mm (-20%) |
 
-For Enugu, the answer changes with the rule:
+*Average start date in the second half of the record minus the first half. Jump years are the first year of the later period, as the test reports them. Trends in the start date are +0.54 to +1.43 days per year (Enugu +1.12).
 
-| Rule | Median start | False starts | Later-half shift |
-|---|---|---|---|
-| 20 mm in 3 days, 7-day dry spell (working rule) | 17 April | 18% | +21 days |
-| 15 mm in 3 days | 3 April | 27% | +17 days |
-| 25 mm in 3 days | 22 April | 9% | +23 days |
-| 5-day dry spell | 23 April | 36% | +24 days |
-| 10-day dry spell | 4 April | 5% | +21 days |
-
-- The median start moves by about three weeks depending on the rule, and the false start rate ranges from 5% to 36%. A false start percentage means nothing without its rule.
-- At every place and under every rule tried for Enugu, the second half of the record starts later than the first half, by 17 to 30 days.
-- For Enugu, the trend is +0.99 days per year over 1981 to 2024 (chance of a trend this large by luck: 0.001). Inside the two halves it is +1.49 days per year for 1981 to 2000 (0.128, only 20 years) and +1.65 days per year for 2001 to 2024 (0.019). I ran this check only for Enugu.
-
-### A sudden jump, and a matching fall in yearly rain
-
-A step-change test (Pettitt, 1979, with a permutation check) finds the biggest single jump in the start date at each place. Yearly rainfall in the same dataset also falls between the first and second half of the record.
-
-| Place | Biggest jump in start date | Average start before and after | Chance of a jump this big by luck | Yearly rain, first to second half |
-|---|---|---|---|---|
-| Enugu | 2006/2007 | 6 Apr to 2 May (+25 days) | 0.7% | 1801 to 1446 mm (-20%) |
-| Nsukka | 1998/1999 | 8 Apr to 4 May (+26 days) | 1.9% | 1618 to 1311 mm (-19%) |
-| Abakaliki | 1999/2000 | 26 Mar to 26 Apr (+30 days) | 0.1% | 1732 to 1378 mm (-20%) |
-| Onitsha | 1997/1998 | 27 Mar to 22 Apr (+26 days) | 0.3% | 2100 to 1707 mm (-19%) |
-| Owerri | 1997/1998 | 22 Mar to 14 Apr (+23 days) | 1.1% | 2275 to 1869 mm (-18%) |
-
-- At all five places the jump is unlikely to be luck within this dataset. For four of them it falls between 1997 and 2000.
-- A step and a straight-line trend explain about the same share of the variation (Enugu: 23.5% and 23.8%), so this test cannot say whether the change was sudden or gradual.
-- Yearly rainfall falls by 18 to 20% at all five places over the same period. A change this large and this simultaneous could be a real change in climate. It could also come from a change in how the rainfall product is made. This dataset cannot tell the two apart, so **the later start is unconfirmed until it is checked against a second source.**
+- At all five places NASA POWER shows a later start and a step in the start date that is unlikely to be luck within this dataset. Yearly rain in the same dataset falls by 18 to 22%.
+- A false start percentage means nothing without its rule. These percentages are lower than in my earlier runs because the rule now follows the paper (a dry spell must exceed 7 days).
 
 ### Second-source check (ERA5)
 
-I compared NASA POWER with ERA5, a weather reanalysis from the European Centre for Medium-Range Weather Forecasts (ECMWF), downloaded through the free Open-Meteo archive (`download_era5.py`, `compare_sources.py`). ERA5 is made with a different model, so agreement would be meaningful. It is still a model, not rain gauges, and its grid is about 25 km. Years compared: 1981 to 2024.
+I compared NASA POWER with ERA5, a weather reanalysis from the European Centre for Medium-Range Weather Forecasts (ECMWF), downloaded through the free Open-Meteo archive (`download_era5.py`, `compare_sources.py`). ERA5 is made with a different model, so agreement would be meaningful. It is still a model, not rain gauges, and its grid is about 25 km. Years compared: 1981 to 2025.
 
-| Place | Later-half shift: NASA / ERA5 | Trend (days per year): NASA / ERA5 | Yearly rain change: NASA / ERA5 | Daily correlation | Yearly-total correlation |
-|---|---|---|---|---|---|
-| Enugu | +21 / +3 days | +0.99 / +0.18 | -20% / -6% | 0.37 | 0.06 |
-| Nsukka | +24 / +8 days | +0.89 / +0.34 | -19% / -6% | 0.38 | 0.05 |
-| Abakaliki | +30 / +5 days | +1.37 / +0.23 | -20% / -4% | 0.35 | 0.03 |
-| Onitsha | +21 / +13 days | +0.68 / +0.50 | -19% / -3% | 0.32 | 0.00 |
-| Owerri | +19 / +5 days | +0.65 / +0.11 | -18% / -3% | 0.35 | -0.09 |
+| Place | Later-half shift: NASA / ERA5 | Trend (days per year): NASA / ERA5 | Step in start date, p: ERA5 | Yearly rain change: NASA / ERA5 | Daily correlation | Yearly-total correlation |
+|---|---|---|---|---|---|---|
+| Enugu | +23 / +7 days | +1.12 / +0.42 | 0.089 | -21% / -6% | 0.37 | 0.08 |
+| Nsukka | +29 / +3 days | +1.11 / +0.09 | 0.623 | -20% / -6% | 0.38 | 0.09 |
+| Abakaliki | +31 / +7 days | +1.43 / +0.28 | 0.229 | -22% / -4% | 0.35 | 0.04 |
+| Onitsha | +18 / +20 days | +0.54 / +0.76 | 0.016 | -19% / -3% | 0.32 | 0.00 |
+| Owerri | +18 / +5 days | +0.55 / +0.13 | 0.716 | -18% / -3% | 0.35 | -0.09 |
 
-- **Direction agrees, size does not.** ERA5 also shows a later start at all five places, but by 3 to 13 days, not 19 to 30. Its step-change tests are not significant (p from 0.15 to 0.92).
-- **The fall in yearly rain appears only in NASA POWER.** ERA5 shows a fall of 3 to 6%, which is small and not significant.
-- **The two sources agree weakly.** Day-by-day correlation is about 0.35. Correlation of yearly totals is close to zero, so they do not agree on which years were wet or dry. Average yearly rain also differs a lot at some places (Onitsha: 1903 mm in NASA, 1213 mm in ERA5).
+- **Direction agrees, size mostly does not.** ERA5 also shows a later start at all five places, but only by 3 to 7 days at four of them, against 18 to 31 days in NASA POWER. Onitsha is the exception: ERA5 shows +20 days and a step that is unlikely to be luck (p = 0.016). A later start of 10 or more days is found at 5 of 5 places in NASA POWER and 1 of 5 in ERA5.
+- **The fall in yearly rain appears only in NASA POWER.** ERA5 shows a fall of 3 to 6%, and none of the five places reaches a fall of 8%.
+- **The two sources agree weakly.** Day-by-day correlation is 0.32 to 0.38, and five-day correlation 0.49 to 0.55. Correlation of yearly totals is close to zero (-0.09 to 0.09), so they do not agree on which years were wet or dry. The start dates they give for the same year differ by about 21 to 24 days on average (mean absolute difference). Average yearly rain also differs a lot at some places (Onitsha: 1896 mm in NASA, 1212 mm in ERA5).
 - **What this means:** the later start is **not confirmed**. At least one of the two products does not track real year-to-year rainfall well here. This check cannot say which. As far as I know, reanalyses like ERA5 are weak for tropical rainfall, so a gauge-based source is the proper next test.
 
 ## Ground-truth survey (in progress)
@@ -139,7 +114,7 @@ Open `index.html` in a browser. The `rain_*.csv` and `era5_*.csv` files are incl
 | File | What it does |
 |---|---|
 | `onset.py` | The rule: start of the rains and false starts for each year |
-| `test_onset.py` | Seven checks on the rule (false start, no rain, rain before March, 6 vs 7 dry days) |
+| `test_onset.py` | Eight checks on the rule (false start, no rain, rain before March, 7 vs 8 dry days, default settings) |
 | `download_all.py` | Downloads daily rainfall from NASA POWER, with retries |
 | `changepoint.py` | Pettitt step-change test with a permutation check |
 | `optimize.py` | The planting-date optimizer (the page repeats it in JavaScript) |
@@ -156,9 +131,20 @@ Open `index.html` in a browser. The `rain_*.csv` and `era5_*.csv` files are incl
 
 Daily precipitation (`PRECTOTCORR`) from the NASA Langley Research Center (LaRC) POWER Project, https://power.larc.nasa.gov/. Check the POWER site for its current wording on how to acknowledge the data.
 
-Pettitt, A. N. (1979). A non-parametric approach to the change-point problem. *Journal of the Royal Statistical Society, Series C (Applied Statistics), 28*(2), 126-135.
+Ati, O. F., Stigter, C. J., & Oladipo, E. O. (2002). A comparison of methods to determine the onset of the growing season in northern Nigeria. *International Journal of Climatology, 22*(6), 731-742. https://doi.org/10.1002/joc.712
 
+Pettitt, A. N. (1979). A non-parametric approach to the change-point problem. *Journal of the Royal Statistical Society, Series C (Applied Statistics), 28*(2), 126-135.
 Sivakumar, M. V. K. (1988). Predicting rainy season potential from the onset of rains in southern Sahelian and Sudanian climatic zones of West Africa. *Agricultural and Forest Meteorology, 42*(4), 295-305.
+
+
+
+## Cite and reuse
+
+The page has a suggested citation and buttons that download the results as CSV or JSON (one row per place, source and year). To rerun everything, follow the run instructions above. To add a DOI, archive the repository on Zenodo, then paste the DOI into `DOI = ""` near the top of `build_site.py` and rebuild.
+
+Data credits: NASA POWER (NASA Langley Research Center, funded through the NASA Earth Science Division). [Weather data by Open-Meteo.com](https://open-meteo.com/), CC BY 4.0, serving ERA5 from the Copernicus Climate Change Service. The Open-Meteo free API is for non-commercial use.
+
+Additional references: Hersbach et al. (2020), The ERA5 global reanalysis, QJRMS 146, 1999-2049, https://doi.org/10.1002/qj.3803. Zippenfenig (2023), Open-Meteo.com Weather API, https://doi.org/10.5281/ZENODO.7970649.
 
 ## Planned
 
