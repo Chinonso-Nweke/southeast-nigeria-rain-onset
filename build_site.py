@@ -1,18 +1,24 @@
 import json
+import os
 from datetime import date
 import pandas as pd
 import onset
-import numpy as np
 from changepoint import changepoint
-from check_data import check as check_data_file
+from check_data import check_series
 from download_all import LOCATIONS
 from analyse_all import analyse
+from compare_sources import compare
+from audit import assess, summary_text
 
 TOLERANCES = [3, 5, 7, 10, 14]      # dry spell lengths (days) the page lets people choose
 WINDOW_DAYS = 30                    # we look at the 30 days after the planting date
 PLANT_DATES = pd.date_range("2001-03-01", "2001-06-30")   # 1 March to 30 June
 RECENT_YEARS = 20                   # the "recent" comparison uses the last 20 years
 WAIT_COSTS = [0.01, 0.03, 0.06]     # cost of waiting one week, as a share of a failed planting
+SOURCES = [                         # key, file pattern, label shown on the page
+    ("nasa", "rain_{}.csv", "NASA POWER"),
+    ("era5", "era5_{}.csv", "ERA5 (via Open-Meteo)"),
+]
 
 
 def risk_table(rain, years=None):
@@ -32,10 +38,25 @@ def risk_table(rain, years=None):
     return counts
 
 
+def source_block(rain):
+    """Everything the page needs for one place under one rainfall source."""
+    a = analyse(rain)
+    years = sorted(set(rain.index.year))
+    a["years_n"] = len(years)
+    a["risk_counts"] = risk_table(rain)
+    a["risk_counts_recent"] = risk_table(rain, years[-RECENT_YEARS:])
+    found = [y for y in a["years"] if y["doy"] is not None]
+    a["changepoint"] = changepoint([y["year"] for y in found], [y["doy"] for y in found])
+    q = check_series(rain)
+    a["qa"] = {k: q[k] for k in ("days", "missing_days", "wettest_day_mm", "wettest_day",
+                                  "annual_mm_first_half", "annual_mm_second_half",
+                                  "annual_change_year", "annual_change_p")}
+    return a
+
+
 if __name__ == "__main__":
     data = {
         "rule": "From 1 March: first day with at least 20 mm in 3 days and no dry spell of 7+ days (under 1 mm) in the next 30 days",
-        "source": "NASA POWER daily PRECTOTCORR",
         "window_days": WINDOW_DAYS,
         "tolerances": TOLERANCES,
         "wait_costs": WAIT_COSTS,
@@ -43,31 +64,40 @@ if __name__ == "__main__":
         "risk_dates": [d.strftime("%m-%d") for d in PLANT_DATES],
         "locations": {},
     }
+    used = []
+    agree_results = {}
     for name, (lat, lon) in LOCATIONS.items():
-        try:
-            rain = pd.read_csv(f"rain_{name}.csv", index_col=0, parse_dates=True).iloc[:, 0]
-        except FileNotFoundError:
-            print(f"Missing rain_{name}.csv, skipping.")
+        series = {}
+        for key, pattern, label in SOURCES:
+            try:
+                series[key] = pd.read_csv(pattern.format(name), index_col=0, parse_dates=True).iloc[:, 0]
+            except FileNotFoundError:
+                if key == "nasa":
+                    print(f"Missing {pattern.format(name)}, skipping {name}.")
+                else:
+                    print(f"No {label} file for {name}: the page will show NASA POWER only.")
+        if "nasa" not in series:
             continue
-        a = analyse(rain)
-        a["label"] = name.capitalize()
-        a["lat"], a["lon"] = lat, lon
-        a["years_n"] = int(len(set(rain.index.year)))
-        first_year, last_year = int(rain.index.year.min()), int(rain.index.year.max())
-        a["risk_counts"] = risk_table(rain)
-        all_years = sorted(set(rain.index.year))
-        a["risk_counts_recent"] = risk_table(rain, all_years[-RECENT_YEARS:])
-        found = [y for y in a["years"] if y["doy"] is not None]
-        a["changepoint"] = changepoint([y["year"] for y in found], [y["doy"] for y in found])
-        qa = check_data_file(name)
-        a["qa"] = {k: qa[k] for k in ("days", "missing_days", "wettest_day_mm", "wettest_day",
-                                      "annual_mm_first_half", "annual_mm_second_half",
-                                      "annual_change_year", "annual_change_p")}
-        data["locations"][name] = a
-        print(f"{name}: done")
+        common = sorted(set.intersection(*(set(s.index.year) for s in series.values())))
+        series = {k: s[s.index.year.isin(common)] for k, s in series.items()}
+        loc = {"label": name.capitalize(), "lat": lat, "lon": lon, "src": {}}
+        for key, s in series.items():
+            loc["src"][key] = source_block(s)
+        if "era5" in series:
+            c = compare(series["nasa"], series["era5"])
+            ass = assess(c, "ERA5")
+            loc["agree"] = ass
+            agree_results[name] = ass
+        data["locations"][name] = loc
+        used = [k for k in series]
+        first_year, last_year = common[0], common[-1]
+        print(f"{name}: done ({', '.join(series)})")
 
+    data["sources"] = used
+    data["source_labels"] = {k: lab for k, _, lab in SOURCES if k in used}
     data["first_year"], data["last_year"] = first_year, last_year
     data["recent_first"] = last_year - RECENT_YEARS + 1
+    data["trust_summary"] = summary_text(agree_results) if agree_results else ""
     with open("results_site.json", "w") as f:
         json.dump(data, f)
 

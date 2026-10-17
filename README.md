@@ -26,7 +26,9 @@ The rule is adapted from Sivakumar (1988), who studied drier parts of West Afric
 ## What the page does
 
 - **Check a planting date:** for any date from 1 March to 30 June and a dry spell length you choose, the share of years with such a dry spell in the next 30 days. It shows all years and the most recent 20 years side by side.
-- **Best planting date:** an optimizer. You say how costly waiting a week is compared with losing a planting to a dry spell, and it picks the date with the lowest total loss, for all years and for the recent 20 years. It is a simple model of rainfall risk and waiting cost, not a crop model.
+- **Rainfall source switch:** every chart and table can be viewed under NASA POWER or ERA5, so the disagreement between them is visible instead of hidden.
+- **Do the sources agree?** An automatic audit rates the agreement at each place (weak, moderate or strong) and lists the reasons in plain words. The thresholds are my own rule of thumb and are written at the top of `audit.py`.
+- **Best planting date:** an optimizer. You say how costly waiting a week is compared with losing a planting to a dry spell, and it picks the date with the lowest total loss, for all years and for the recent 20 years, under each rainfall source. It also gives a **robust date**: the date with the smallest worst-case regret across every source and period (minimax regret). A wide spread between the dates is itself a result. It is a simple model of rainfall risk and waiting cost, not a crop model.
 - **Step-change test:** a Pettitt test (Pettitt, 1979) with a permutation check finds the single biggest jump in the start date and says whether it could be chance. This separates a sudden change, which can point to a change in the data source, from a gradual trend.
 - **Data checks:** every rebuild checks for missing days, negative values and unusual years, and stops if the data is unreliable.
 - Pidgin and Igbo versions of the main text, share buttons for WhatsApp and SMS, and a yearly automatic update.
@@ -98,7 +100,7 @@ I compared NASA POWER with ERA5, a weather reanalysis from the European Centre f
 - All five places use the **same rainfall product**, so they are not five independent confirmations. A problem in the product itself could produce the same pattern everywhere.
 - The later start, and the fall in yearly rain that comes with it, are patterns in NASA POWER. **A first check against a second source (ERA5, below) did not reproduce them at the same size, so they are unconfirmed and should not be reported as a change in the climate.** A gauge-based source such as CHIRPS, or station records, is still needed.
 - The planting-date tool looks at rainfall only. It ignores soil, crop, seed and farm practice, so it is **not planting advice** for a particular farm.
-- The planting-date tool and the step-change test use NASA POWER only. The two sources agree weakly (see below), so treat the risk numbers as indicative, not exact.
+- The two rainfall sources agree weakly (see above), so treat the risk numbers and the best dates as indicative, not exact. The robust date shows the spread but does not say which source is right.
 - The Pidgin and Igbo versions of the page are drafts and have not been checked by a fluent speaker.
 - Past patterns do not guarantee future seasons.
 
@@ -109,13 +111,16 @@ You need Python 3 with `pandas`, `numpy` and `requests`.
 ```
 pip install pandas numpy requests
 python test_onset.py     # checks that the rule behaves as described
-python test_new.py       # checks the step-change test, optimizer and data checks
+python test_new.py       # checks the step-change test, optimizer, robust date and auditor
+python test_sources.py   # checks the ERA5 download and the comparison
 python download_all.py   # downloads daily rainfall for the five places
+python download_era5.py   # downloads ERA5 as the second source
 python check_data.py     # quality checks on the downloaded files
-python build_site.py     # computes everything and writes index.html
+python audit.py          # compares the two sources and writes audit_report.md
+python build_site.py     # computes everything (about a minute) and writes index.html
 ```
 
-Open `index.html` in a browser. The `rain_*.csv` files are included, so you can skip the download step.
+Open `index.html` in a browser. The `rain_*.csv` and `era5_*.csv` files are included, so you can skip the download steps. The page works with NASA POWER alone if the ERA5 files are missing.
 
 ## Files
 
@@ -126,8 +131,9 @@ Open `index.html` in a browser. The `rain_*.csv` files are included, so you can 
 | `download_all.py` | Downloads daily rainfall from NASA POWER, with retries |
 | `changepoint.py` | Pettitt step-change test with a permutation check |
 | `optimize.py` | The planting-date optimizer (the page repeats it in JavaScript) |
-| `check_data.py` | Data quality checks |
-| `test_new.py` | Tests for the three files above |
+| `check_data.py` | Data quality checks, for both sources |
+| `audit.py` | The data auditor: rates how well the two sources agree and writes `audit_report.md` |
+| `test_new.py` | Tests for the step-change test, optimizer, robust date, data checks and auditor |
 | `download_era5.py`, `compare_sources.py`, `test_sources.py` | Second-source check against ERA5 |
 | `net_test.py` | Shows which data servers your connection can reach |
 | `analyse_all.py` | Runs the rule at each place and summarises the results |
@@ -145,6 +151,6 @@ Sivakumar, M. V. K. (1988). Predicting rainy season potential from the onset of 
 ## Planned
 
 - Check against a gauge-based source (CHIRPS, or station records). CHIRPS from NOAA's server could not be reached from my connection, and CHIRPS's own server needs large downloads.
-- Show both rainfall products on the page, so the planting-date advice reflects how much the sources disagree.
+- Collect ground truth from farmers (daily rain reports and recalled start dates), to calibrate which source to trust.
 - Crop-specific dry spell limits, once reliable sources are found.
 - Checks of the Pidgin and Igbo text by fluent speakers.

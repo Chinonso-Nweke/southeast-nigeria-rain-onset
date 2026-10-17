@@ -11,8 +11,11 @@ MAX_MISSING_SHARE = 0.005       # more than 0.5% missing days is an error
 MAX_PLAUSIBLE_DAILY_MM = 400    # a day above this is flagged for a look
 
 
-def check(name):
-    rain = pd.read_csv(f"rain_{name}.csv", index_col=0, parse_dates=True).iloc[:, 0]
+def check(name, pattern="rain_{}.csv"):
+    return check_series(pd.read_csv(pattern.format(name), index_col=0, parse_dates=True).iloc[:, 0])
+
+
+def check_series(rain):
     problems, warnings = [], []
     first, last = rain.index.min(), rain.index.max()
     expected = len(pd.date_range(first, last))
@@ -45,22 +48,26 @@ def check(name):
 
 
 if __name__ == "__main__":
+    import os
     report, bad = {}, False
-    for name in LOCATIONS:
-        try:
-            r = check(name)
-        except FileNotFoundError:
-            print(f"{name}: rain_{name}.csv not found. Run download_all.py first.")
-            bad = True
-            continue
-        report[name] = r
-        status = "PROBLEM" if r["problems"] else ("note" if r["warnings"] else "ok")
-        print(f"{name:<10} {status:<8} days={r['days']} missing={r['missing_days']} "
-              f"yearly total {r['annual_mm_first_half']} -> {r['annual_mm_second_half']} mm "
-              f"(biggest step in {r['annual_change_year']}, p={r['annual_change_p']})")
-        for msg in r["problems"] + r["warnings"]:
-            print("           -", msg)
-        bad = bad or bool(r["problems"])
+    for label, pattern in (("NASA", "rain_{}.csv"), ("ERA5", "era5_{}.csv")):
+        for name in LOCATIONS:
+            if label == "ERA5" and not os.path.exists(pattern.format(name)):
+                continue
+            try:
+                r = check(name, pattern)
+            except FileNotFoundError:
+                print(f"{name}: {pattern.format(name)} not found. Run download_all.py first.")
+                bad = True
+                continue
+            report[f"{label.lower()}_{name}"] = r
+            status = "PROBLEM" if r["problems"] else ("note" if r["warnings"] else "ok")
+            print(f"{label:<5}{name:<10} {status:<8} days={r['days']} missing={r['missing_days']} "
+                  f"yearly total {r['annual_mm_first_half']} -> {r['annual_mm_second_half']} mm "
+                  f"(biggest step in {r['annual_change_year']}, p={r['annual_change_p']})")
+            for msg in r["problems"] + r["warnings"]:
+                print("           -", msg)
+            bad = bad or bool(r["problems"])
     with open("data_report.json", "w") as f:
         json.dump(report, f, indent=1)
     sys.exit(1 if bad else 0)

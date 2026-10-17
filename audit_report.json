@@ -1,0 +1,146 @@
+{
+ "summary": "NASA POWER and ERA5 agree weakly at all 5 places. Treat the planting-date numbers as indicative and read the later-start finding as unconfirmed.",
+ "places": {
+  "enugu": {
+   "level": "weak",
+   "flags": [
+    "Yearly totals barely agree (correlation 0.06): the two sources disagree on which years were wet or dry.",
+    "The later start differs: +21 days in NASA POWER, +3 days in ERA5.",
+    "The change in yearly rain differs: -20% in NASA POWER, -6% in ERA5.",
+    "Only NASA POWER shows a statistically significant jump in the start date; ERA5 does not."
+   ],
+   "numbers": {
+    "daily_r": 0.37,
+    "five_day_r": 0.54,
+    "yearly_r": 0.06,
+    "start_r": 0.18,
+    "start_diff_days": 22.7,
+    "shift": {
+     "nasa": 21,
+     "other": 3
+    },
+    "annual_change_pct": {
+     "nasa": -19.7,
+     "other": -6.4
+    },
+    "mean_mm": {
+     "nasa": 1623,
+     "other": 1594
+    }
+   }
+  },
+  "nsukka": {
+   "level": "weak",
+   "flags": [
+    "Yearly totals barely agree (correlation 0.05): the two sources disagree on which years were wet or dry.",
+    "The later start differs: +24 days in NASA POWER, +8 days in ERA5.",
+    "The change in yearly rain differs: -19% in NASA POWER, -6% in ERA5.",
+    "Only NASA POWER shows a statistically significant jump in the start date; ERA5 does not."
+   ],
+   "numbers": {
+    "daily_r": 0.38,
+    "five_day_r": 0.55,
+    "yearly_r": 0.05,
+    "start_r": 0.29,
+    "start_diff_days": 20.2,
+    "shift": {
+     "nasa": 24,
+     "other": 8
+    },
+    "annual_change_pct": {
+     "nasa": -19.0,
+     "other": -6.0
+    },
+    "mean_mm": {
+     "nasa": 1464,
+     "other": 1619
+    }
+   }
+  },
+  "abakaliki": {
+   "level": "weak",
+   "flags": [
+    "Yearly totals barely agree (correlation 0.03): the two sources disagree on which years were wet or dry.",
+    "The later start differs: +30 days in NASA POWER, +5 days in ERA5.",
+    "The change in yearly rain differs: -20% in NASA POWER, -4% in ERA5.",
+    "Only NASA POWER shows a statistically significant jump in the start date; ERA5 does not."
+   ],
+   "numbers": {
+    "daily_r": 0.35,
+    "five_day_r": 0.52,
+    "yearly_r": 0.03,
+    "start_r": 0.12,
+    "start_diff_days": 24.1,
+    "shift": {
+     "nasa": 30,
+     "other": 5
+    },
+    "annual_change_pct": {
+     "nasa": -20.4,
+     "other": -4.0
+    },
+    "mean_mm": {
+     "nasa": 1555,
+     "other": 1487
+    }
+   }
+  },
+  "onitsha": {
+   "level": "weak",
+   "flags": [
+    "Yearly totals barely agree (correlation 0.00): the two sources disagree on which years were wet or dry.",
+    "The later start differs: +21 days in NASA POWER, +13 days in ERA5.",
+    "The change in yearly rain differs: -19% in NASA POWER, -3% in ERA5.",
+    "Average yearly rain differs by 36% (1903 mm in NASA POWER, 1213 mm in ERA5).",
+    "Only NASA POWER shows a statistically significant jump in the start date; ERA5 does not."
+   ],
+   "numbers": {
+    "daily_r": 0.32,
+    "five_day_r": 0.48,
+    "yearly_r": 0.0,
+    "start_r": 0.2,
+    "start_diff_days": 22.7,
+    "shift": {
+     "nasa": 21,
+     "other": 13
+    },
+    "annual_change_pct": {
+     "nasa": -18.7,
+     "other": -2.7
+    },
+    "mean_mm": {
+     "nasa": 1903,
+     "other": 1213
+    }
+   }
+  },
+  "owerri": {
+   "level": "weak",
+   "flags": [
+    "Yearly totals barely agree (correlation -0.09): the two sources disagree on which years were wet or dry.",
+    "The later start differs: +19 days in NASA POWER, +5 days in ERA5.",
+    "The change in yearly rain differs: -18% in NASA POWER, -3% in ERA5.",
+    "Only NASA POWER shows a statistically significant jump in the start date; ERA5 does not."
+   ],
+   "numbers": {
+    "daily_r": 0.35,
+    "five_day_r": 0.49,
+    "yearly_r": -0.09,
+    "start_r": 0.32,
+    "start_diff_days": 22.5,
+    "shift": {
+     "nasa": 19,
+     "other": 5
+    },
+    "annual_change_pct": {
+     "nasa": -17.9,
+     "other": -3.1
+    },
+    "mean_mm": {
+     "nasa": 2072,
+     "other": 2298
+    }
+   }
+  }
+ }
+}

@@ -6,7 +6,14 @@ import numpy as np
 import pandas as pd
 import compare_sources as cc
 import download_era5 as de
-from test_chirps import synthetic
+
+def synthetic(seed=0, start="1984-01-01", end="2020-12-31"):
+    idx = pd.date_range(start, end)
+    rng = np.random.default_rng(seed)
+    doy = idx.dayofyear.values
+    p_wet = np.clip(0.08 + 0.6 * np.exp(-((doy - 220) / 70.0) ** 2), 0, 1)
+    return pd.Series(np.where(rng.random(len(idx)) < p_wet, rng.gamma(0.8, 14, len(idx)), 0.0), index=idx)
+
 
 PAYLOAD = {"daily": {"time": ["2000-01-01", "2000-01-02", "2000-01-03"], "precipitation_sum": [0.0, 12.5, None]}}
 
