@@ -25,12 +25,19 @@ jobs:
         run: |
           python test_onset.py
           python test_new.py
+          python test_sources.py
 
       - name: Download the latest rainfall data
         run: python download_all.py
 
+      - name: Download the second rainfall source
+        run: python download_era5.py
+
       - name: Check the data quality
         run: python check_data.py
+
+      - name: Audit how well the sources agree
+        run: python audit.py
 
       - name: Rebuild the page
         run: python build_site.py
