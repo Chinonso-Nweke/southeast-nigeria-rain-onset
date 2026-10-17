@@ -69,6 +69,18 @@ I compared NASA POWER with ERA5, a weather reanalysis from the European Centre f
 - **The two sources agree weakly.** Day-by-day correlation is 0.32 to 0.38, and five-day correlation 0.49 to 0.55. Correlation of yearly totals is close to zero (-0.09 to 0.09), so they do not agree on which years were wet or dry. The start dates they give for the same year differ by about 21 to 24 days on average (mean absolute difference). Average yearly rain also differs a lot at some places (Onitsha: 1896 mm in NASA, 1212 mm in ERA5).
 - **What this means:** the later start is **not confirmed**. At least one of the two products does not track real year-to-year rainfall well here. This check cannot say which. As far as I know, reanalyses like ERA5 are weak for tropical rainfall, so a gauge-based source is the proper next test.
 
+## What published studies say
+
+I searched for published work on rainfall data quality in Nigeria. I read the abstracts or full pages of the studies below; I did not verify their figures independently.
+
+- **NASA POWER against rain gauges.** Ellis and Samson (2026) compared NASA POWER with daily records from 20 Nigerian Meteorological Agency (NiMet) stations for 1982 to 2011. They report weak agreement from year to year, a very large overestimate of how often it rains (in the wet season, rain on 99% of days in POWER against 46% at the gauges), and trends that run opposite to the gauge trends. They conclude POWER is inadequate for hydroclimate monitoring in Nigeria. It does reproduce where the wetter and drier places are. This fits what my own check found, and it is a strong reason **not to report the NASA-based later start as a change in climate**.
+- **Which products do better.** Datti et al. (2024) evaluated three satellite products against 42 NiMet gauges for 2002 to 2022 and recommend CHIRPS for research in Nigeria. ERA5 and NASA POWER were not among the products they tested.
+- **Farmers and measured rainfall together.** Nnadi et al. (2019) surveyed 300 farm household heads in Anambra State and compared their answers with 31 years of rainfall data. Farmers reported later onset far more often in 2016 than in 1986, and the measured data pointed the same way, but the paper's own tests found the change in annual rainfall not statistically significant. My survey follows a similar idea, with a small sample and a different method.
+- **What farmers in published surveys reported.** The only south-east survey I found that reports onset figures is Nnadi et al. (2019), above: in Anambra, 14.3% of 300 respondents reported a change in rainfall onset for 1986 and 87.7% for 2016, and 82.0% reported early cessation for 2016. Ozor et al. (2015) surveyed 108 farmers in Imo State; it reports no onset figures, and only 5% named changes in rainfall intensity and pattern as an impact. These are other researchers' surveys with different questions and samples. They are context for my own survey, not a substitute for it. Surveys I found for Oyo State (south-west) are outside these five places, so I did not use them. A study on climate perception and climate-smart rice farming in Ebonyi State (*Atmosphere*, 2021) appeared in my search, but I could not read it.
+- **Long station records for Owerri.** One study (Ugwuegbulam et al., 2025) reports a weak upward trend in annual rainfall for Owerri over 1961 to 2020, about +2 mm per year. Its abstract does not say which station or provider the data came from, so I treat it as a caution, not as evidence either way. NASA POWER shows a fall of 18% at Owerri.
+
+What this means for this project: the best next step is a comparison with gauge data. NiMet has a data request page (nimet.gov.ng/datarequest); its terms and cost are not described on the page I could read.
+
 ## Ground-truth survey (in progress)
 
 The two rainfall sources disagree, and neither is a rain gauge measurement. To get independent evidence, I am running a short anonymous survey of farmers near the five places. It asks:
@@ -85,7 +97,7 @@ The answers will be compared with the years each rainfall source calls late or e
 
 - The rainfall values are **satellite and model estimates** (NASA POWER) for a grid cell of roughly 50 km. They are not rain gauge readings from a farm.
 - All five places use the **same rainfall product**, so they are not five independent confirmations. A problem in the product itself could produce the same pattern everywhere.
-- The later start, and the fall in yearly rain that comes with it, are patterns in NASA POWER. **A first check against a second source (ERA5, below) did not reproduce them at the same size, so they are unconfirmed and should not be reported as a change in the climate.** A gauge-based source such as CHIRPS, or station records, is still needed.
+- The later start, and the fall in yearly rain that comes with it, are patterns in NASA POWER. A published comparison with 20 NiMet gauges (see "What published studies say") found NASA POWER weak on year-to-year agreement and its trends opposite to the gauges. **A first check against a second source (ERA5, below) did not reproduce them at the same size, so they are unconfirmed and should not be reported as a change in the climate.** A gauge-based source such as CHIRPS, or station records, is still needed.
 - The planting-date tool looks at rainfall only. It ignores soil, crop, seed and farm practice, so it is **not planting advice** for a particular farm.
 - The two rainfall sources agree weakly (see above), so treat the risk numbers and the best dates as indicative, not exact. The robust date shows the spread but does not say which source is right.
 - The Pidgin and Igbo versions of the page are drafts and have not been checked by a fluent speaker.
@@ -132,6 +144,16 @@ Open `index.html` in a browser. The `rain_*.csv` and `era5_*.csv` files are incl
 Daily precipitation (`PRECTOTCORR`) from the NASA Langley Research Center (LaRC) POWER Project, https://power.larc.nasa.gov/. Check the POWER site for its current wording on how to acknowledge the data.
 
 Ati, O. F., Stigter, C. J., & Oladipo, E. O. (2002). A comparison of methods to determine the onset of the growing season in northern Nigeria. *International Journal of Climatology, 22*(6), 731-742. https://doi.org/10.1002/joc.712
+
+Datti, A. D., Zeng, G., Tarnavsky, E., Cornforth, R., Pappenberger, F., Abdullahi, B. A., & Onyejuruwa, A. (2024). Evaluation of satellite-based rainfall estimates against rain gauge observations across agro-climatic zones of Nigeria, West Africa. *Remote Sensing, 16*(10), 1755. https://doi.org/10.3390/rs16101755
+
+Ellis, A. W., & Samson, B. (2026). Comparative assessment of POWER and CMAP satellite-derived rainfall products for hydroclimate monitoring in Nigeria. *Theoretical and Applied Climatology, 157*(4), 228. https://doi.org/10.1007/s00704-026-06121-1
+
+Nnadi, O. I., Liwenga, E. T., Lyimo, J. G., & Madukwe, M. C. (2019). Impacts of variability and change in rainfall on gender of farmers in Anambra, Southeast Nigeria. *Heliyon, 5*(7), e02085. https://doi.org/10.1016/j.heliyon.2019.e02085
+
+Ugwuegbulam, J. C., Osuagwu, J. C., & Nwoke, H. U. (2025). Rainfall variability and long-term trends in Owerri, southeastern Nigeria. *International Journal of Engineering Technology Research & Management, 9*(10), 346-351. https://doi.org/10.5281/zenodo.17435171
+
+Ozor, N., Umunakwe, P. C., Ani, A. O., & Nnadi, F. N. (2015). Perceived impacts of climate change among rural farmers in Imo State, Nigeria. *African Journal of Agricultural Research, 10*(14), 1756-1764. https://doi.org/10.5897/AJAR2015.9618
 
 Pettitt, A. N. (1979). A non-parametric approach to the change-point problem. *Journal of the Royal Statistical Society, Series C (Applied Statistics), 28*(2), 126-135.
 Sivakumar, M. V. K. (1988). Predicting rainy season potential from the onset of rains in southern Sahelian and Sudanian climatic zones of West Africa. *Agricultural and Forest Meteorology, 42*(4), 295-305.
