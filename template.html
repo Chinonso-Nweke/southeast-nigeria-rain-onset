@@ -62,13 +62,20 @@
   .kv .box{background:var(--soft);border-radius:10px;padding:12px 14px}
   .kv .box .big2{font-size:1.5rem;font-weight:700;color:var(--accent);line-height:1.2}
   .kv .box .lab{font-size:.85rem;color:var(--muted)}
+  .chip{margin:0 0 6px;font-size:.9rem;color:var(--muted)}
+  .chip a{color:var(--accent)}
+  .lvl-weak{color:var(--warn);font-weight:700} .lvl-moderate{font-weight:700} .lvl-strong{color:var(--accent);font-weight:700}
+  .kv .box.main{background:var(--accent);color:#fff}
+  .kv .box.main .big2,.kv .box.main .lab{color:#fff}
+  .legend b.dia{display:inline-block;width:10px;height:10px;background:var(--ink);transform:rotate(45deg);vertical-align:middle;margin-right:7px}
+  #flags{margin:8px 0 0;padding-left:20px}
   footer{margin-top:36px;font-size:.88rem;color:var(--muted)}
   @media(max-width:520px){th,td{padding:6px 3px;font-size:.82rem}}
 </style>
 </head>
 <body>
 <nav class="top" aria-label="Sections"><div class="in">
-  <a href="#check">Check a date</a><a href="#best">Best date</a><a href="#history">History</a><a href="#places">Places</a><a href="#method">Method and checks</a>
+  <a href="#check">Check a date</a><a href="#best">Best date</a><a href="#sources">Sources</a><a href="#history">History</a><a href="#places">Places</a><a href="#method">Method and checks</a>
 </div></nav>
 <div class="wrap">
   <h1 data-i18n="title">When do the rains start in south-east Nigeria?</h1>
@@ -78,9 +85,11 @@
     <div><label for="lang" data-i18n="lang_label">Language</label>
       <select id="lang"><option value="en">English</option><option value="pcm">Pidgin (draft)</option><option value="ig">Igbo (draft)</option></select></div>
     <div><label for="loc" data-i18n="place_label">Choose a place</label><select id="loc"></select></div>
+    <div id="srcBox"><label for="src">Rainfall source</label><select id="src"></select></div>
   </div>
 
   <div class="tiles" id="tiles"></div>
+  <p class="chip" id="trustChip"></p>
 
   <h2 id="check" data-i18n="h_check">Check a planting date</h2>
   <div class="card">
@@ -100,19 +109,30 @@
       <span id="shMsg" aria-live="polite"></span>
     </div>
     <div id="riskChart" style="margin-top:14px"></div>
-    <div class="legend"><span><i></i>All years</span><span><i class="d"></i><span id="recLeg">Last 20 years</span></span><span><b class="dot"></b>Best date, all years</span><span><b class="dot ring"></b>Best date, recent years</span></div>
-    <p class="cap">Share of years (__FIRST__ to __LAST__) with a dry spell of the chosen length in the 30 days after each planting date. A dry day is a day under 1 mm of rain. This looks at rainfall only, from one rainfall product. It ignores soil, crop and seed type, so it is not advice for a particular farm.</p>
+    <div class="legend"><span><i></i>All years</span><span><i class="d"></i><span id="recLeg">Last 20 years</span></span><span><b class="dot"></b>Best date, all years</span><span><b class="dot ring"></b>Best date, recent years</span><span><b class="dia"></b>Robust date, all sources</span></div>
+    <p class="cap">Share of years (__FIRST__ to __LAST__) with a dry spell of the chosen length in the 30 days after each planting date. A dry day is a day under 1 mm of rain. This looks at rainfall only, from the rainfall source selected at the top. It ignores soil, crop and seed type, so it is not advice for a particular farm.</p>
   </div>
 
   <h2 id="best">Best planting date</h2>
   <div class="card">
     <p>This combines two things: the dry spell risk you saw above and the cost of waiting. Planting later is safer from dry spells but loses part of the season. Say how costly waiting is, and the tool picks the date with the lowest total loss. It uses the dry spell length chosen above.</p>
+    <p>Because the rainfall sources disagree, it also finds a <strong>robust date</strong>: the one whose worst case across all sources and periods is smallest.</p>
     <div class="row" style="margin-top:10px">
       <div><label for="wait">If I wait one extra week, I lose about this much, compared with losing a whole planting to a dry spell</label><select id="wait"></select></div>
     </div>
     <div class="kv" id="bestBoxes"></div>
     <div class="result" id="bestText" aria-live="polite"></div>
-    <p class="cap">How it works: loss = (share of years with a dry spell of the chosen length) + (cost of waiting per week x weeks after 1 March). The dry spell curve is averaged over seven dates so that one odd year cannot choose the date. This is a simple model of rainfall risk and waiting cost only. It does not know your crop, soil or seed, so treat it as a way to see the trade-off, not as planting advice.</p>
+    <p class="cap">How it works: for each source and period (all years, and the last 20), loss = (share of years with a dry spell of the chosen length) + (cost of waiting per week x weeks after 1 March). The dry spell curve is averaged over seven dates so that one odd year cannot choose the date. The robust date minimises the worst regret: how much more loss it gives than the best date for whichever source and period turns out to be right. This is a simple model of rainfall risk and waiting cost only. It does not know your crop, soil or seed, so treat it as a way to see the trade-off, not as planting advice.</p>
+  </div>
+
+  <h2 id="sources">Do the rainfall sources agree?</h2>
+  <div class="card">
+    <p id="trustLead"></p>
+    <table id="agree"><thead><tr><th>Place</th><th>Agreement</th><th>Later start, second half</th><th>Yearly rain change</th><th>Yearly totals correlation</th></tr></thead><tbody></tbody></table>
+    <p class="cap" id="agreeCap"></p>
+    <p id="flagsHead" style="margin-top:14px"></p>
+    <ul id="flags"></ul>
+    <p class="cap">Agreement is rated by a rule of thumb of my own, not an official standard: weak if yearly totals correlate below 0.5, or the later-start estimates differ by more than 10 days, or the change in yearly rain differs by more than 8 percentage points; strong only if all of these are much tighter. Neither source is a rain gauge measurement, so agreement does not prove either is right.</p>
   </div>
 
   <h2 id="history">Start of the rains, year by year</h2>
@@ -138,10 +158,10 @@
   <div class="note">
     <p><strong>Working rule for the start of the rains:</strong> <span id="rule"></span></p>
     <ul>
-      <li>The rainfall figures are satellite and model estimates for a grid area of roughly 50 km, not rain gauge readings from a farm.</li>
+      <li>The rainfall figures are satellite and model estimates (NASA POWER on a grid of roughly 50 km, ERA5 of roughly 25 km), not rain gauge readings from a farm.</li>
       <li>The rule is adapted from Sivakumar (1988), who studied drier parts of West Africa. We apply it to a wetter zone and start looking on 1 March, so the numbers are a working choice, not an official standard for south-east Nigeria.</li>
       <li>A false start means an early wet spell was followed by a dry spell of 7 days or more. The percentage depends on the rule, so always read it together with the rule.</li>
-      <li>The later start and the matching fall in yearly rain are patterns in NASA POWER. A comparison with ERA5, a second rainfall product, showed a smaller later start (3 to 13 days, not 19 to 30) and almost no fall in yearly rain, and the two products agreed only weakly. Treat the later start as unconfirmed, and read the risk numbers as indicative.</li>
+      <li id="methodTrust"></li>
       <li>Past patterns do not guarantee future seasons. Nothing here is planting advice for a particular farm.</li>
     </ul>
   </div>
@@ -164,7 +184,13 @@ const DATA = __DATA__;
   var M = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   var NS = "http://www.w3.org/2000/svg";
   var $ = function (id) { return document.getElementById(id); };
-  var locKey, tol = 7, dayIdx = 31;
+  var locKey, tol = 7, dayIdx = 31, srcKey = "nasa";
+  function cur(k) {
+    var b = DATA.locations[k], s = b.src[srcKey] || b.src.nasa, o = {}, p;
+    for (p in b) o[p] = b[p];
+    for (p in s) o[p] = s[p];
+    return o;
+  }
 
   var I18N = {
     en: {
@@ -353,6 +379,8 @@ const DATA = __DATA__;
     var B = bests(L);
     el("circle", { cx: sx(B.all), cy: H - m.b, r: 6, fill: C.accent }, s);
     el("circle", { cx: sx(B.recent), cy: H - m.b, r: 5, fill: "var(--card)", stroke: C.accent, "stroke-width": 2 }, s);
+    var rb = robustIdx(scenarios(locKey).map(function (q) { return q.curve; }), wait).idx, rx = sx(rb), ry = H - m.b;
+    el("polygon", { points: (rx) + "," + (ry - 8) + " " + (rx + 7) + "," + ry + " " + rx + "," + (ry + 8) + " " + (rx - 7) + "," + ry, fill: "var(--ink)" }, s);
     var x = sx(dayIdx), p = riskPct(L, tol, dayIdx);
     el("line", { x1: x, x2: x, y1: m.t, y2: H - m.b, stroke: C.warn, "stroke-width": 1.5, "stroke-dasharray": "4 4" }, s);
     el("circle", { cx: x, cy: sy(p), r: 5, fill: C.warn }, s);
@@ -371,24 +399,58 @@ const DATA = __DATA__;
     updateShare();
   }
 
-  function renderBest(L) {
-    var B = bests(L), N = L.years_n, R = DATA.recent_n;
-    var iA = B.all, iR = B.recent;
-    var boxes = $("bestBoxes"); boxes.innerHTML = "";
-    [[fmtMD(DATA.risk_dates[iA]), "Best date using all " + N + " years", Math.round(B.a[iA] * 100) + "% of years had a dry spell of " + tol + "+ days after it"],
-     [fmtMD(DATA.risk_dates[iR]), "Best date using the last " + R + " years (" + DATA.recent_first + " to " + DATA.last_year + ")", Math.round(B.r[iR] * 100) + "% of those years had a dry spell of " + tol + "+ days after it"]
-    ].forEach(function (x) {
-      var d = document.createElement("div"); d.className = "box";
-      d.innerHTML = '<div class="big2"></div><div class="lab"></div><div class="lab"></div>';
-      d.children[0].textContent = x[0]; d.children[1].textContent = x[1]; d.children[2].textContent = x[2];
-      boxes.appendChild(d);
+  function scenarios(k) {
+    var b = DATA.locations[k], out = [], R = DATA.recent_n, n = DATA.risk_dates.length;
+    DATA.sources.forEach(function (sk) {
+      var s = b.src[sk], a = [], r = [];
+      for (var i = 0; i < n; i++) {
+        a.push(s.risk_counts[String(tol)][i] / s.years_n);
+        r.push(s.risk_counts_recent[String(tol)][i] / R);
+      }
+      out.push({ name: DATA.source_labels[sk] + ", all " + s.years_n + " years", curve: a });
+      out.push({ name: DATA.source_labels[sk] + ", last " + R + " years", curve: r });
     });
-    var diff = iR - iA, txt;
-    if (diff === 0) txt = "Both periods give the same date.";
-    else txt = "The recent years give a date " + Math.abs(diff) + (Math.abs(diff) === 1 ? " day " : " days ") + (diff > 0 ? "later" : "earlier") +
-      " than the full record.";
-    txt += " With only " + R + " recent years, this date is uncertain. Treat a difference of a few days as noise.";
-    $("bestText").textContent = txt;
+    return out;
+  }
+  function robustIdx(curves, w) {
+    var losses = curves.map(function (c) { return smooth(c).map(function (v, i) { return v + w * i / 7; }); });
+    var n = losses[0].length, floor = losses.map(function (l) { return Math.min.apply(null, l); });
+    var best = 0, bestR = Infinity, i, j;
+    for (i = 0; i < n; i++) {
+      var reg = 0;
+      for (j = 0; j < losses.length; j++) reg = Math.max(reg, losses[j][i] - floor[j]);
+      reg = Math.round(reg * 1e12) / 1e12;
+      if (reg < bestR) { bestR = reg; best = i; }
+    }
+    var own = losses.map(function (l) {
+      var b = 0, bl = Infinity;
+      for (var q = 0; q < l.length; q++) { var v = Math.round(l[q] * 1e12) / 1e12; if (v < bl) { bl = v; b = q; } }
+      return b;
+    });
+    return { idx: best, regret: bestR, own: own };
+  }
+
+  function renderBest(L) {
+    var sc = scenarios(locKey), R = robustIdx(sc.map(function (s) { return s.curve; }), wait);
+    var boxes = $("bestBoxes"); boxes.innerHTML = "";
+    function add(big, lab, sub, cls) {
+      var d = document.createElement("div"); d.className = cls || "box";
+      d.innerHTML = '<div class="big2"></div><div class="lab"></div><div class="lab"></div>';
+      d.children[0].textContent = big; d.children[1].textContent = lab; d.children[2].textContent = sub;
+      boxes.appendChild(d);
+    }
+    var many = sc.length > 2;
+    add(fmtMD(DATA.risk_dates[R.idx]), many ? "Robust date: works across all sources and periods" : "Date that works for both periods",
+        "Never more than " + Math.round(R.regret * 100) + "% of a failed planting worse than the best date for any one of them", "box main");
+    sc.forEach(function (s, j) {
+      var i = R.own[j];
+      add(fmtMD(DATA.risk_dates[i]), s.name + ": its own best date",
+          Math.round(s.curve[i] * 100) + "% of years had a dry spell of " + tol + "+ days after that date, " + Math.round(s.curve[R.idx] * 100) + "% after the robust date");
+    });
+    var lo = Math.min.apply(null, R.own), hi = Math.max.apply(null, R.own);
+    $("bestText").textContent = "Depending on the source and period, the best date ranges from " + fmtMD(DATA.risk_dates[lo]) + " to " + fmtMD(DATA.risk_dates[hi]) +
+      (hi - lo === 0 ? "." : ", a spread of " + (hi - lo) + (hi - lo === 1 ? " day" : " days") + ".") +
+      " The robust date is " + fmtMD(DATA.risk_dates[R.idx]) + ". A wide spread means the rainfall record does not pin the date down, so treat any single date with caution.";
   }
 
   function shareText() {
@@ -415,27 +477,27 @@ const DATA = __DATA__;
 
   function table() {
     var tb = document.querySelector("#cmp tbody"); tb.innerHTML = "";
-    var names = Object.keys(DATA.locations).sort(function (a, b) { return DATA.locations[a].lat - DATA.locations[b].lat; });
+    var names = Object.keys(DATA.locations).sort(function (a, b) { return cur(a).lat - cur(b).lat; });
     names.forEach(function (k) {
-      var L = DATA.locations[k], tr = document.createElement("tr"); if (k === locKey) tr.className = "me";
+      var L = cur(k), tr = document.createElement("tr"); if (k === locKey) tr.className = "me";
       [L.label, L.median_onset, L.false_start_pct + "%", shiftText(L.shift_days)].forEach(function (v) {
         var td = document.createElement("td"); td.textContent = v; tr.appendChild(td);
       });
       tb.appendChild(tr);
     });
-    var ks = Object.keys(DATA.locations), doy = function (k) { return DATA.locations[k].median_doy; };
+    var ks = Object.keys(DATA.locations), doy = function (k) { return cur(k).median_doy; };
     var early = ks.reduce(function (a, k) { return doy(k) < doy(a) ? k : a; }, ks[0]);
     var late = ks.reduce(function (a, k) { return doy(k) > doy(a) ? k : a; }, ks[0]);
-    var later = ks.filter(function (k) { return DATA.locations[k].shift_days > 0; }).length;
-    $("cmpCap").textContent = "Earliest median start: " + DATA.locations[early].label + " (" + DATA.locations[early].median_onset +
-      "). Latest: " + DATA.locations[late].label + " (" + DATA.locations[late].median_onset + "). The second half of the record starts later than the first at " +
+    var later = ks.filter(function (k) { return cur(k).shift_days > 0; }).length;
+    $("cmpCap").textContent = "Earliest median start: " + cur(early).label + " (" + cur(early).median_onset +
+      "). Latest: " + cur(late).label + " (" + cur(late).median_onset + "). The second half of the record starts later than the first at " +
       later + " of " + ks.length + " places. All places use the same rainfall product, so they are not independent confirmations.";
   }
 
   function qaTable() {
     var tb = document.querySelector("#qa tbody"); tb.innerHTML = "";
     Object.keys(DATA.locations).forEach(function (k) {
-      var L = DATA.locations[k], q = L.qa, tr = document.createElement("tr");
+      var L = cur(k), q = L.qa, tr = document.createElement("tr");
       [L.label, q.days.toLocaleString("en"), q.missing_days, q.annual_mm_first_half + " to " + q.annual_mm_second_half + " mm", q.wettest_day_mm + " mm (" + q.wettest_day + ")"].forEach(function (v) {
         var td = document.createElement("td"); td.textContent = v; tr.appendChild(td);
       });
@@ -443,25 +505,74 @@ const DATA = __DATA__;
     });
   }
 
+  function levelText(l) { return l === "weak" ? "Weak" : (l === "strong" ? "Strong" : "Moderate"); }
+  function trust() {
+    var multi = DATA.sources.length > 1, b = DATA.locations[locKey], chip = $("trustChip");
+    $("srcBox").style.display = multi ? "" : "none";
+    chip.innerHTML = "";
+    var t1 = document.createTextNode("Showing " + DATA.source_labels[srcKey] + ". ");
+    chip.appendChild(t1);
+    if (multi && b.agree) {
+      var st = document.createElement("strong"); st.textContent = levelText(b.agree.level).toLowerCase() + " agreement";
+      chip.appendChild(document.createTextNode("The two rainfall sources show "));
+      chip.appendChild(st);
+      chip.appendChild(document.createTextNode(" at " + b.label + ". "));
+      var a = document.createElement("a"); a.href = "#sources"; a.textContent = "See why"; chip.appendChild(a);
+    } else {
+      chip.appendChild(document.createTextNode("A second rainfall source has not been loaded, so this cannot be cross-checked."));
+    }
+    $("methodTrust").textContent = DATA.trust_summary || "Only one rainfall source is loaded, so the planting-date numbers cannot be cross-checked. Treat them as indicative, not exact.";
+  }
+  function agreeSection() {
+    var tb = document.querySelector("#agree tbody"); tb.innerHTML = "";
+    var multi = DATA.sources.length > 1;
+    $("trustLead").textContent = multi ? DATA.trust_summary : "Only one rainfall source is loaded, so there is nothing to compare yet.";
+    $("agree").style.display = multi ? "" : "none";
+    var fl = $("flags"); fl.innerHTML = ""; $("flagsHead").textContent = "";
+    if (!multi) return;
+    var names = Object.keys(DATA.locations).sort(function (a, b) { return DATA.locations[a].lat - DATA.locations[b].lat; });
+    names.forEach(function (k) {
+      var L = DATA.locations[k], g = L.agree, tr = document.createElement("tr"); if (k === locKey) tr.className = "me";
+      if (!g) return;
+      var n = g.numbers, cells = [L.label, null, (n.shift.nasa >= 0 ? "+" : "") + n.shift.nasa + " / " + (n.shift.other >= 0 ? "+" : "") + n.shift.other + " days",
+        (n.annual_change_pct.nasa > 0 ? "+" : "") + Math.round(n.annual_change_pct.nasa) + "% / " + (n.annual_change_pct.other > 0 ? "+" : "") + Math.round(n.annual_change_pct.other) + "%", n.yearly_r.toFixed(2)];
+      cells.forEach(function (v, i) {
+        var td = document.createElement("td");
+        if (i === 1) { var sp = document.createElement("span"); sp.className = "lvl-" + g.level; sp.textContent = levelText(g.level); td.appendChild(sp); }
+        else td.textContent = v;
+        tr.appendChild(td);
+      });
+      tb.appendChild(tr);
+    });
+    $("agreeCap").textContent = "Columns with two numbers show NASA POWER first, then ERA5, for the second half of the record compared with the first.";
+    var cb = DATA.locations[locKey];
+    if (cb.agree) {
+      $("flagsHead").textContent = "Why " + cb.label + " is rated " + levelText(cb.agree.level).toLowerCase() + ":";
+      (cb.agree.flags.length ? cb.agree.flags : ["No disagreements found above the thresholds."]).forEach(function (f) {
+        var li = document.createElement("li"); li.textContent = f; fl.appendChild(li);
+      });
+    }
+  }
+
   function applyLang() {
     document.documentElement.lang = lang === "pcm" ? "pcm" : (lang === "ig" ? "ig" : "en");
     var nodes = document.querySelectorAll("[data-i18n]");
     for (var i = 0; i < nodes.length; i++) nodes[i].textContent = T(nodes[i].getAttribute("data-i18n"));
-    $("lede").textContent = T("lede", { n: DATA.locations[locKey].years_n });
+    $("lede").textContent = T("lede", { n: cur(locKey).years_n });
     document.title = T("title");
     var opts = $("tol").options;
     for (var j = 0; j < opts.length; j++) opts[j].textContent = T("tol_opt", { t: opts[j].value });
   }
 
   function all() {
-    var L = DATA.locations[locKey];
-    tiles(L); updateResult(L); drawRisk(L); drawOnset(L); drawMonths(L); table(); qaTable();
+    var L = cur(locKey);
+    tiles(L); updateResult(L); drawRisk(L); drawOnset(L); drawMonths(L); table(); qaTable(); trust(); agreeSection();
   }
 
   // set up controls
   var sel = $("loc");
   Object.keys(DATA.locations).forEach(function (k) {
-    var o = document.createElement("option"); o.value = k; o.textContent = DATA.locations[k].label; sel.appendChild(o);
+    var o = document.createElement("option"); o.value = k; o.textContent = cur(k).label; sel.appendChild(o);
   });
   locKey = DATA.locations.enugu ? "enugu" : Object.keys(DATA.locations)[0];
   sel.value = locKey;
@@ -479,7 +590,11 @@ const DATA = __DATA__;
   var dr = $("day"); dr.max = DATA.risk_dates.length - 1; dr.value = dayIdx;
   $("rule").textContent = DATA.rule;
   applyLang();
-  $("source").textContent = DATA.source;
+  $("source").textContent = DATA.sources.map(function (k) { return DATA.source_labels[k]; }).join(" and ");
+  var ss = $("src");
+  DATA.sources.forEach(function (k) { var o = document.createElement("option"); o.value = k; o.textContent = DATA.source_labels[k]; ss.appendChild(o); });
+  ss.value = srcKey;
+  ss.addEventListener("change", function () { srcKey = ss.value; all(); });
 
   sel.addEventListener("change", function () { locKey = sel.value; all(); });
   $("lang").addEventListener("change", function () { lang = $("lang").value; applyLang(); all(); });
@@ -496,9 +611,9 @@ const DATA = __DATA__;
       navigator.clipboard.writeText(txt).then(function () { flash(T("copied")); }, function () { flash(T("share_fail")); });
     } else { flash(T("share_fail")); }
   });
-  ws.addEventListener("change", function () { wait = parseFloat(ws.value); var L = DATA.locations[locKey]; renderBest(L); drawRisk(L); });
-  ts.addEventListener("change", function () { tol = parseInt(ts.value, 10); var L = DATA.locations[locKey]; updateResult(L); drawRisk(L); });
-  dr.addEventListener("input", function () { dayIdx = parseInt(dr.value, 10); var L = DATA.locations[locKey]; updateResult(L); drawRisk(L); });
+  ws.addEventListener("change", function () { wait = parseFloat(ws.value); var L = cur(locKey); renderBest(L); drawRisk(L); });
+  ts.addEventListener("change", function () { tol = parseInt(ts.value, 10); var L = cur(locKey); updateResult(L); drawRisk(L); });
+  dr.addEventListener("input", function () { dayIdx = parseInt(dr.value, 10); var L = cur(locKey); updateResult(L); drawRisk(L); });
   var links = document.querySelectorAll("nav.top a");
   function markNav() {
     var cur = "";

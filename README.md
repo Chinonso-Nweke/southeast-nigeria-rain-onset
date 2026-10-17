@@ -94,6 +94,18 @@ I compared NASA POWER with ERA5, a weather reanalysis from the European Centre f
 - **The two sources agree weakly.** Day-by-day correlation is about 0.35. Correlation of yearly totals is close to zero, so they do not agree on which years were wet or dry. Average yearly rain also differs a lot at some places (Onitsha: 1903 mm in NASA, 1213 mm in ERA5).
 - **What this means:** the later start is **not confirmed**. At least one of the two products does not track real year-to-year rainfall well here. This check cannot say which. As far as I know, reanalyses like ERA5 are weak for tropical rainfall, so a gauge-based source is the proper next test.
 
+## Ground-truth survey (in progress)
+
+The two rainfall sources disagree, and neither is a rain gauge measurement. To get independent evidence, I am running a short anonymous survey of farmers near the five places. It asks:
+
+- whether the rains now start earlier or later than 20 to 30 years ago, and whether total rain has changed,
+- which years from 2005 to 2025 they remember as late or early starts, or as years they lost seedlings to a dry spell,
+- an open answer in their own words (English, Pidgin or Igbo).
+
+The answers will be compared with the years each rainfall source calls late or early, and with its claim about yearly rain. Memory is imperfect, so this is supporting evidence, not proof. A separate optional form collects volunteers for daily rain reports from March 2027. Contact details are kept private and are not part of this repository. The script that creates both forms is in `survey/create_forms.gs`.
+
+**Status:** collecting responses. No results yet.
+
 ## Limits
 
 - The rainfall values are **satellite and model estimates** (NASA POWER) for a grid cell of roughly 50 km. They are not rain gauge readings from a farm.
