@@ -2,7 +2,7 @@
 
 An open analysis of 45 years of daily rainfall for five places in south-east Nigeria (Enugu, Nsukka, Abakaliki, Onitsha and Owerri). It estimates when the rains usually start, how often an early wet spell is followed by a dry spell (a "false start"), and how risky it has been to plant on a given date.
 
-**Live page:** https://kendrick-chinonso.github.io/southeast-nigeria-rain-onset/
+**Live page:** https://github.com/Chinonso-Nweke/southeast-nigeria-rain-onset
 
 **Author:** Chinonso Nweke. This is a first agricultural technology data project, and a work in progress.
 
