@@ -4,7 +4,7 @@ An open analysis of 45 years of daily rainfall for five places in south-east Nig
 
 **Live page:** https://kendrick-chinonso.github.io/southeast-nigeria-rain-onset/
 
-**Author:** Kendrick Chinonso. This is a first agricultural technology data project, and a work in progress.
+**Author:** Chinonso Nweke. This is a first agricultural technology data project, and a work in progress.
 
 ![How the analysis works](method.svg)
 
